@@ -60,7 +60,7 @@ Start the app:
 ```
 rails server
 ```
-
+(rails server -b 0.0.0.0)
 ## Testing
 
 This project uses RSpec for testing.
