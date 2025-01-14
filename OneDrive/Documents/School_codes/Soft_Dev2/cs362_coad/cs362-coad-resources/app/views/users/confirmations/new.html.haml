@@ -1,0 +1,9 @@
+.container-auth.text-center
+  %h1.h3.font-weight-normal Resend confirmation instructions
+  %p Use the email address that you signed up with.
+  = form_for(resource, as: resource_name, url: confirmation_path(resource_name), html: { method: :post, class: 'form-auth' }) do |f|
+    = render partial: 'devise/shared/error_messages'
+    .form-group
+      = f.label :email, class: 'sr-only'
+      = f.email_field :email, autofocus: true, required: true, autocomplete: 'email', placeholder: 'Email address', value: (resource.pending_reconfirmation? ? resource.unconfirmed_email : resource.email), class: 'form-control'
+    = f.submit 'Resend confirmation instructions', class: 'btn btn-lg btn-primary btn-block mt-4'

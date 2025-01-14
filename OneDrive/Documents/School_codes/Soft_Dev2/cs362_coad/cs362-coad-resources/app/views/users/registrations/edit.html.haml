@@ -1,0 +1,32 @@
+%h2.my-5 Edit Profile
+
+.row
+  .col-5
+    = form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f|
+      = render partial: 'devise/shared/error_messages'
+      .form-group
+        = f.label :email
+        = f.email_field :email, autocomplete: 'email', class: 'form-control'
+      - if devise_mapping.confirmable? && resource.pending_reconfirmation?
+        %p.bg-secondary.text-light.p-3
+          Awaiting confirmation sent to
+          = resource.unconfirmed_email
+      .form-group.mt-5
+        = f.label :password, 'New password'
+        %small.d-block.text-muted Leave blank if you don't want to change it
+        = f.password_field :password, autocomplete: 'new-password', class: 'form-control'
+        - if @minimum_password_length
+          %small.text-muted= "#{@minimum_password_length} characters minimum"
+      .form-group
+        = f.label :password_confirmation, 'New password (again)'
+        = f.password_field :password_confirmation, autocomplete: 'new-password', class: 'form-control'
+      .form-group.mt-5
+        = f.label :current_password
+        = f.password_field :current_password, autocomplete: 'current-password', class: 'form-control'
+        %small.text-muted Needed to confirm your profile changes
+      .form-group
+        = f.submit 'Save changes', class: 'btn btn-success'
+
+%h3.mt-5 Deactivate my account
+%p Account deactivation is permanent and cannot be undone.
+= link_to 'Deactivate', registration_path(resource_name), data: { confirm: 'Are you sure? This cannot be undone.' }, method: :delete, class: 'btn btn-outline-danger'

@@ -1,0 +1,46 @@
+<%= link_to "My Organization", organization_path(id: current_user.organization.id), class: "btn btn-lg btn-primary" %>
+<%= link_to "Edit Organization", edit_organization_path(id: current_user.organization.id), class: "btn btn-lg btn-primary" %>
+
+<br><br>
+
+<div class="dashboard-container">
+  <div class="sidenav">
+    <ul class="nav" id="primary">
+      <li class="active">
+        <a data-toggle="tab" href="#tickets">Tickets</a>
+      </li>
+    </ul>
+  </div>
+  <div class="tab-content">
+    <div id="tickets" class="tab-pane fade in active">
+      <%= render 'tickets/index' %>
+    </div>
+  </div>
+</div>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<script>
+  var hash = document.location.hash;
+  var selected = hash.split(':');
+  var primaryTab = selected[0];
+  var secondaryTab;
+  if (selected.length > 1) {
+    secondaryTab = '#' + selected[1];
+  }
+  if (hash) {
+    $('#primary.nav a[href='+primaryTab+']').tab('show');
+    if (secondaryTab) {
+      $('#secondary.nav a[href='+secondaryTab+']').tab('show');
+    }
+  }
+
+  $('#primary.nav a').on('shown.bs.tab', function(e) {
+    window.location.hash = e.target.hash;
+  });
+  $('#secondary.nav a').on('shown.bs.tab', function(e) {
+    var primaryTab = window.location.hash.split(':')[0];
+    var secondaryTab = e.target.hash.replace('#', '')
+    window.location.hash = primaryTab + ':' + secondaryTab;
+  });
+</script>

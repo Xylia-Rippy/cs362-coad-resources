@@ -1,0 +1,10 @@
+- provide(:title, 'Application Submitted')
+
+.container.center.mt-5
+  %h1 Application Submitted
+  %h3
+    Thank you for applying. We will get back to you shortly
+    %br
+    through the contact info provided.
+  .container.spaced
+    = link_to 'Return To Dashboard', dashboard_path, class: 'btn btn-primary'

@@ -1,0 +1,8 @@
+- provide(:title, 'Home')
+.center.jumbotron
+  %h1.display-3 Disaster Resource Network
+  %p To organize and deploy community resources in an efficient and timely manner, effectively contributing before, during, and after a disaster.
+  %p COAD organizations and members are committed to partnering in our region to build disaster-resilient communities.
+  .mt-5
+    = link_to 'Get Help', new_ticket_path, class: 'btn btn-lg btn-primary'
+    = link_to 'Give Help', organization_expectations_path, class: 'btn btn-lg btn-primary ml-5'

@@ -1,0 +1,25 @@
+<% provide(:title, 'Edit Organization') %>
+
+<h1>Edit Organization</h1>
+
+<%= form_for @organization, url: {action: 'update'} do |f| %>
+  <%= f.label(:name) %>
+  <%= f.text_field :name %>
+  <br />
+  <br />
+  <%= f.label(:phone) %>
+  <%= f.text_field :phone %>
+  <br />
+  <br />
+  <%= f.label(:email) %>
+  <%= f.number_field :email %>
+  <br />
+  <br />
+  <%= f.label(:description) %>
+  <%= f.text_field :description %>
+  <br />
+  <br />
+  <%= f.submit "Update Resource", class: "btn btn-lg btn-primary" %>
+  <br />
+  <br />
+<% end %>

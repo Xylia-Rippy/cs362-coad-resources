@@ -1,0 +1,16 @@
+- provide(:title, 'Add Region')
+
+%h1.mt-5 Add a region
+.form-row.mt-5
+  .col-5
+    = form_for(@region) do |f|
+      - if @region.errors.any?
+        #error_explanation
+          %h2= "#{pluralize(@region.errors.count, 'error')} prohibited this region from being saved:"
+          %ul
+            - @region.errors.full_messages.each do |message|
+              %li= message
+      .form-group
+        = f.label(:name)
+        = f.text_field :name, class: 'form-control'
+      = f.submit 'Add Region', class: 'btn btn-success'

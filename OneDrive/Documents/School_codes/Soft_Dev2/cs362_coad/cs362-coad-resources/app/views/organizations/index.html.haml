@@ -1,0 +1,57 @@
+%h1.my-5= link_to 'Dashboard', dashboard_path
+
+.row
+  .col
+    %h2 Organizations
+
+.row.mt-5
+  %ul#organizations_filter.nav.nav-tabs{role: 'tablist'}
+    %li.nav-item
+      %a#all-tab.nav-link.active{href: '#all', 'data-toggle': 'tab', role: 'tab', 'aria-controls': 'all', 'aria-selected': 'true' } All
+    %li.nav-item
+      %a#approved-tab.nav-link{href: '#approved', 'data-toggle': 'tab', role: 'tab', 'aria-controls': 'approved', 'aria-selected': 'false' } Approved
+    %li.nav-item
+      %a#pending-tab.nav-link{href: '#pending', 'data-toggle': 'tab', role: 'tab', 'aria-controls': 'pending', 'aria-selected': 'false' } Pending
+    %li.nav-item
+      %a#rejected-tab.nav-link{href: '#rejected', 'data-toggle': 'tab', role: 'tab', 'aria-controls': 'rejected', 'aria-selected': 'false' } Rejected
+
+.row.mt-5
+  .col
+    #organizations.tab-content
+      #all.tab-pane.fade.show.active{role: 'tabpanel', 'aria-labelledby': 'all-tab'}
+        %h3 All Organizations
+        %ul.list-group.nobullets.mt-5
+          - @organizations.each do |o|
+            %li.mb-2.d-flex.justify-content-between.align-items-center.h3[o]
+              = link_to o.name, o, class: 'list-group-item list-group-item-action'
+      #approved.tab-pane.fade{role: 'tabpanel', 'aria-labelledby': 'approved-tab'}
+        %h3 Approved
+        %ul.list-group.nobullets.mt-5
+          - @organizations.approved.each do |o|
+            %li.mb-2.d-flex.justify-content-between.align-items-center.h3[o]
+              = link_to o.name, o, class: 'list-group-item list-group-item-action'
+      #pending.tab-pane.fade{role: 'tabpanel', 'aria-labelledby': 'pending-tab'}
+        %h3 Pending
+        %ul.list-group.nobullets.mt-5
+          - @organizations.submitted.each do |o|
+            %li.mb-2.d-flex.justify-content-between.align-items-center[o]
+              = link_to o, class: 'list-group-item list-group-item-action' do
+                .row
+                  .col-9
+                    %h3= o.name
+                    %p= o.created_at.strftime('%B %d, %Y at %l:%M %p')
+                    %small= truncate(o.description, length: 350)
+                  .col-3
+                    .btn.btn-primary Review
+      #rejected.tab-pane.fade{role: 'tabpanel', 'aria-labelledby': 'rejected-tab'}
+        %h3 Rejected
+        %ul.list-group.nobullets.mt-5
+          - @organizations.rejected.each do |o|
+            %li.mb-2.d-flex.justify-content-between.align-items-center[o]
+              = link_to o, class: 'list-group-item list-group-item-action' do
+                .row
+                  .col-9
+                    %h3= o.name
+                    %small
+                      Reason for Rejection:
+                      = truncate(o.rejection_reason, length: 350)

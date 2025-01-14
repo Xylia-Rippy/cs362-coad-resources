@@ -1,0 +1,116 @@
+<h2 class="mt-5">Partner Organization Application</h2>
+
+<% if @organization.errors.any? %>
+  <strong style="color:red"> <%= @organization.errors.full_messages.first %> </strong>
+  <br/><br/>
+<% end %>
+
+<%= form_for @organization do |f| %>
+
+  <div class="field">
+    <%= f.label :liability_insurance, 'My organization has liability insurance.' %><br />
+    <%= f.radio_button :liability_insurance, true %> Yes <br/>
+    <%= f.radio_button :liability_insurance, false %> No <br/>
+  </div><br/>
+
+  <div class="field">
+    <%= f.label :agreement_one, 'I own and am responsible for the goods I am donating OR my organization has granted me the authority to donate these goods on their behalf.' %><br />
+    <%= f.radio_button :agreement_one, true, required: true %> I Agree <br/>
+  </div><br/>
+
+  <div class="field">
+    <%= f.label :agreement_two, 'For donations of goods, I maintain that the goods are in working order (if applicable), and are clean, sanitary and immediately able to be used.' %><br />
+    <%= f.radio_button :agreement_two, true, required: true %> I Agree <br/>
+  </div><br/>
+
+  <div class="field">
+    <%= f.label :agreement_three, 'I understand that I am responsible for the storage and organization of any material goods until they are dispatched to those who need them.' %><br />
+    <%= f.radio_button :agreement_three, true, required: true %> I Agree <br/>
+  </div><br/>
+
+  <div class="field">
+    <%= f.label :agreement_four, 'I understand that not all donated goods will be needed right away, if at all.' %><br />
+    <%= f.radio_button :agreement_four, true, required: true %> I Agree <br/>
+  </div><br/>
+
+  <div class="field">
+    <%= f.label :agreement_five, 'For donations of volunteer hours or labor, the volunteer(s) have signed a liability waiver for my organization.' %><br />
+    <%= f.radio_button :agreement_five, true, required: true %> I Agree <br/>
+  </div><br/>
+
+  <div class="field">
+    <%= f.label :agreement_six, 'For donations of volunteer hours or labor, the volunteer(s) has passed a background check provided by my organization.' %><br />
+    <%= f.radio_button :agreement_six, true, required: true %> I Agree <br/>
+  </div><br/>
+
+  <div class="field">
+    <%= f.label :agreement_seven, 'My organization maintains all liability regarding volunteer injury, wrongdoing, misappropriation, or other any other issues regarding my/our donation.' %><br />
+    <%= f.radio_button :agreement_seven, true, required: true %> I Agree <br/>
+  </div><br/>
+
+  <div class="field">
+    <%= f.label :agreement_eight, 'CENTRAL OREGON COAD shall be indemnified against legal action resulting from the action or inaction of my organization’s members and or/the allocation or the refusal to allocate resources or people.' %><br />
+    <%= f.radio_button :agreement_eight, true, required: true %> I Agree <br/>
+  </div><br/>
+
+  <div class="field">
+    <%= f.label :primary_name, 'What is your name? (Last, First)' %><br />
+    <%= f.text_field :primary_name %>
+  </div>
+
+  <div class="field">
+    <%= f.label :name, 'Organization Name' %><br />
+    <%= f.text_field :name %>
+  </div>
+
+  <div class="field">
+    <%= f.label :title, 'What is your title? (if applicable)' %><br />
+    <%= f.text_field :title %>
+  </div>
+
+  <div class="field">
+    <%= f.label :phone, 'What is your direct phone number? Cell phone is best.' %><br />
+    <%= f.text_field :phone %>
+  </div>
+
+  <div class="field">
+    <%= f.label :secondary_name, 'Who may we contact regarding your organization\'s application if we are unable to reach you?' %><br />
+    <%= f.text_field :secondary_name %>
+  </div>
+
+  <div class="field">
+    <%= f.label :secondary_phone, 'What is a good secondary phone number we may reach your organization at?' %><br />
+    <%= f.text_field :secondary_phone %>
+  </div>
+
+  <div class="field">
+    <%= f.label :email, 'What is your Organization\'s email?' %><br />
+    <%= f.text_field :email %>
+  </div>
+
+  <div class="field">
+    <%= f.label :resource_category_ids, 'What are you donating and/or making available for dispersal? (Check all that apply and use "other" field to specify)' %><br/>
+    <% ResourceCategory.all.each do |resource_category| %>
+      <%= f.label resource_category.name %>
+      <%= f.check_box :resource_category_ids, {multiple: true}, checked_value = resource_category.id, unchecked_value = nil %>
+      <br/>
+    <% end %>
+  </div>
+
+  <div class="field">
+    <%= f.label :description, 'Description' %><br />
+    <%= f.text_area :description, size: '60x6' %>
+  </div>
+
+  <div class="field">
+    <%= f.label :transportation, 'If needed, could you arrange transport for your donation to wherever it is assigned (could be anywhere within Deschutes County)?' %><br />
+    <%= f.radio_button :transportation, :yes %> Yes <br/>
+    <%= f.radio_button :transportation, :no %> No <br/>
+    <%= f.radio_button :transportation, :maybe %> Maybe <br/>
+  </div><br/>
+
+  <div class="actions">
+    <%= f.submit 'Apply', class: 'btn btn-success' %>
+  </div>
+
+<% end %>

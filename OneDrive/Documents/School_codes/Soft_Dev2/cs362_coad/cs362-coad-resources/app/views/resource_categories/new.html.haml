@@ -1,0 +1,16 @@
+- provide(:title, 'Add Resource Category')
+
+%h1.mt-5 Add a resource category
+.form-row.mt-5
+  .col-5
+    = form_for(@resource_category) do |f|
+      - if @resource_category.errors.any?
+        #error_explanation
+          %h2= "#{pluralize(@resource_category.errors.count, 'error')} prohibited this resource category from being saved:"
+          %ul
+            - @resource_category.errors.full_messages.each do |message|
+              %li= message
+      .form-group
+        = f.label(:name)
+        = f.text_field :name, class: 'form-control'
+      = f.submit 'Add resource category', class: 'btn btn-success'

@@ -1,0 +1,13 @@
+%h1.my-5= link_to 'Dashboard', dashboard_path
+
+.row
+  .col
+    %h2 Regions
+  .col.text-right
+    = link_to 'Add Region', new_region_path, class: 'btn btn-primary'
+.row.mt-5
+  .col
+    %ul.list-group.nobullets
+      - @regions.each do |r|
+        %li.mb-2.d-flex.justify-content-between.align-items-center.h3[r]
+          = link_to r.name, r, class: 'list-group-item list-group-item-action'

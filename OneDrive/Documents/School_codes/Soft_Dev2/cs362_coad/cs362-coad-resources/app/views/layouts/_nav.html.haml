@@ -1,0 +1,17 @@
+%nav.navbar.navbar-expand-md.navbar-dark.fixed-top.bg-dark
+  = link_to 'Disaster Resource Network', root_path, class: 'navbar-brand'
+  %button.navbar-toggler{'aria-controls' => 'navbar', 'aria-expanded' => 'false', 'aria-label' => 'Toggle navigation', 'data-target' => '#navbar', 'data-toggle' => 'collapse', :type => 'button'}
+    %span.navbar-toggler-icon
+  #navbar.collapse.navbar-collapse
+    %ul.navbar-nav.ml-auto
+      - if user_signed_in?
+        %li.nav-item= link_to 'Dashboard', dashboard_path, class: 'nav-link'
+        - if current_user.admin?
+          %li.nav-item= link_to 'Categories', resource_categories_path, class: 'nav-link'
+          %li.nav-item= link_to 'Organizations', organizations_path, class: 'nav-link'
+          %li.nav-item= link_to 'Regions', regions_path, class: 'nav-link'
+        %li.nav-item= link_to 'Edit profile', edit_profile_path, class: 'nav-link'
+        %li.nav-item= link_to 'Log out', logout_path, method: :delete, class: 'nav-link'
+      - else
+        %li.nav-item= link_to 'Log in', login_path, class: 'nav-link'
+        %li.nav-item= link_to 'Sign up', signup_path, class: 'nav-link'

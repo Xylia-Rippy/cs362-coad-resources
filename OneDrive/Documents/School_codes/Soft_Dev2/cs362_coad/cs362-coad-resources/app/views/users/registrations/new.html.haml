@@ -1,0 +1,22 @@
+.container-auth.text-center
+  %h1.h3.font-weight-normal Sign Up
+  = form_for(resource, as: resource_name, url: registration_path(resource_name), html: {class: 'form-auth text-left'}) do |f|
+    = render partial: 'devise/shared/error_messages'
+    .form-row.mb-4
+      .col
+        = f.label :email, class: 'sr-only'
+        = f.email_field :email, required: true, autocomplete: 'email', placeholder: 'Email address', autofocus: true, class: 'form-control'
+    .form-row.mb-4
+      .col
+        = f.label :password, class: 'sr-only'
+        = f.password_field :password, required: true, autocomplete: 'new-password', placeholder: 'Password', class: 'form-control'
+        - if @minimum_password_length
+          %small.form-text.text-muted (#{@minimum_password_length} characters minimum)
+      .col
+        = f.label :password_confirmation, class: 'sr-only'
+        = f.password_field :password_confirmation, required: true, placeholder: 'Password confirmation', class: 'form-control'
+    .mb-4.text-center= recaptcha_tags
+    = f.submit 'Sign up', id: 'commit', class: 'btn btn-lg btn-primary btn-block'
+  .mt-4
+    = surround('Already have an account? Please ', '.') do
+      = link_to 'sign in', new_user_session_path

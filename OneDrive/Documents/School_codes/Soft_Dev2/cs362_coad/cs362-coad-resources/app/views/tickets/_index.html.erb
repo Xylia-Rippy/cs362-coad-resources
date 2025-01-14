@@ -1,0 +1,47 @@
+<div class="mt-5">
+  <div>
+    <li class="list-group-item">
+      <%= form_tag(dashboard_path, method: :get) do %>
+        Status:
+        <%= select_tag :status,
+            options_for_select(@status_options, params[:status]),
+            prompt: 'All',
+            onchange: 'this.form.submit();'
+        %><br>
+        Region:
+        <%= select_tag :region_id,
+            options_from_collection_for_select(Region.all, 'id', 'name', params[:region_id]),
+            prompt: 'All',
+            onchange: 'this.form.submit();'
+        %><br>
+        Resource Category:
+        <%= select_tag :resource_category_id,
+            options_from_collection_for_select(ResourceCategory.all, 'id', 'name', params[:resource_category_id]),
+            prompt: 'All',
+            onchange: 'this.form.submit();'
+        %><br>
+        Sort by:
+        <%= select_tag :sort_order,
+            options_for_select(['Oldest First', 'Newest First'], params[:sort_order]),
+            onchange: 'this.form.submit();'
+        %>
+      <% end %>
+      <%== pagy_nav(@pagy) %>
+    </li>
+  </div>
+
+  <ul class="list-group">
+    <% @tickets.each do |t| %>
+      <li id="<%= dom_id(t) %>" class="list-group-item">
+        <span class="list-group-item-header"><%= link_to t.name, ticket_path(id: t.id) %></span><br>
+        <span class="text-muted"><%= t.region.name %></span><br>
+        <span class="text-muted"><%= t.resource_category.name %></span><br>
+        <% if params[:status] == 'All Captured' %>
+          <span class="text-muted">Held By: <%= t.organization.name %></span><br>
+        <% end %>
+        <span class="text-muted"><%= t.created_at %></span><br>
+        <span class="text-secondary"><%= t.description %></span><br>
+      </li>
+    <% end %>
+  </ul>
+</div>

@@ -1,0 +1,40 @@
+- provide(:title, @ticket.name)
+
+%h1.my-5= link_to 'Dashboard', dashboard_path
+
+%h2.mt-5 Tickets
+
+.row.mt-5
+  .col
+    %h1 Ticket #{@ticket.id}
+  .col.text-right
+    - if (@ticket.organization_id == current_user.organization&.id || current_user.admin?) && @ticket.organization_id.present?
+      = link_to 'Release', release_ticket_path(@ticket), method: :post, class: 'btn btn-outline-primary'
+    - elsif current_user.organization&.approved?
+      = link_to 'Capture', capture_ticket_path(@ticket), method: :post, class: 'btn btn-outline-primary'
+    - if !@ticket.closed? && (@ticket.organization_id == current_user.organization&.id || current_user.admin?)
+      = link_to 'Close', close_ticket_path(@ticket), method: :patch, class: 'btn btn-outline-primary'
+    - if current_user.admin?
+      = link_to 'Delete', ticket_path(@ticket), data: { confirm: 'Are you sure? This cannot be undone.' }, method: :delete, class: 'btn btn-outline-danger'
+
+.row.mt-5
+  .col-6
+    %dl.row
+      %dt.col-3 Name
+      %dd.col-9= @ticket.name
+      %dt.col-3 Submitted at
+      %dd.col-9= @ticket.created_at.strftime('%B %d, %Y at %l:%M %p')
+      %dt.col-3 Phone
+      %dd.col-9= @ticket.phone.phony_formatted
+      %dt.col-3 Region
+      %dd.col-9= @ticket.region.name
+      %dt.col-3 Cateogry
+      %dd.col-9= @ticket.resource_category.name
+      %dt.col-3 Description
+      %dd.col-9= @ticket.description
+  .col-6
+    %dl.row
+      %dt.col-3 Status
+      %dd.col-9= @ticket.closed? ? 'Closed' : 'Open'
+      %dt.col-3 Captured by
+      %dd.col-9= @ticket.organization&.name

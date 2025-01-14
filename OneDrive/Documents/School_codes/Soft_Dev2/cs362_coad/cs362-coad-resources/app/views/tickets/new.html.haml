@@ -1,0 +1,30 @@
+= provide(:title, 'Get Help')
+
+.row.justify-content-center.my-5
+  .col-6
+    %h1.h1.font-weight-normal Get Help
+    %p This creates ticket in the system, which will be reviewed and responded to via phone.
+    = form_for @ticket do |f|
+      - if @ticket.errors.any?
+        #error_explanation
+          %h2= "#{pluralize(@ticket.errors.count, 'error')} prohibited this ticket from being saved:"
+          %ul
+            - @ticket.errors.full_messages.each do |message|
+              %li= message
+      .form-group
+        = f.label :name, 'Full Name'
+        = f.text_field :name, autofocus: true, required: true, class: 'form-control'
+      .form-group
+        = f.label :phone, 'Phone Number'
+        = f.text_field :phone, required: true, class: 'form-control'
+      .form-group
+        = f.label :region_id, 'Region'
+        = f.collection_select(:region_id, Region.all, :id, :name, {include_blank: 'Select...'}, class: 'form-control', required: true)
+      .form-group
+        = f.label :resource_category_id, 'Resource Category'
+        = f.collection_select(:resource_category_id, ResourceCategory.active, :id, :name, {include_blank: 'Select...'}, class: 'form-control', required: true)
+      .form-group
+        = f.label :description, 'Description'
+        = f.text_area :description, size: '60x6', placeholder: 'Please briefly describe your specific need.'
+      .text-center
+        = f.submit 'Send this help request', class: 'align-center btn btn-success mt-4'
