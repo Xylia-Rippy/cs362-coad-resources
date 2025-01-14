@@ -24,25 +24,33 @@ class Organization < ApplicationRecord
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
   # Validates if the Organization has a phone, email, name, etc.
   validates_presence_of :email, :name, :phone, :status, :primary_name, :secondary_name, :secondary_phone
+  # Validates the lengths of the emails with the min, and mac amount of characters and creates it.
   validates_length_of :email, minimum: 1, maximum: 255, on: :create
+  # Validates the email formats pulling VALID_EMAIL_REGEX from above.
   validates :email, format: { with: VALID_EMAIL_REGEX }
+  # Validates if the email is case_sensitive and if so make it false.
   validates_uniqueness_of :email, case_sensitive: false
+  # Validates the Organization name and the min/max name lengths and then creates it.
   validates_length_of :name, minimum: 1, maximum: 255, on: :create
+  # Validates the Organizations name and if it seems to be uniqueness, and changes it to not case_sensitive.
   validates_uniqueness_of :name, case_sensitive: false
+  # Validates the lengths of description and if it reaches the max length it usually stops, and then creates 
+  # the description after max length is met.
   validates_length_of :description, maximum: 1020, on: :create
 
+  # Function to approve the Organization
   def approve
     self.status = :approved
   end
-
+ # Function to reject the Organization
   def reject
     self.status = :rejected
   end
-
+ # Function to set the defult status of the Organization
   def set_default_status
     self.status ||= :submitted
   end
-
+ # Function to_s (still unknown)
   def to_s
     name
   end
