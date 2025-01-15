@@ -1,3 +1,16 @@
+/
+my thoughts on this
+sets the region where the ticket is
+sets what category is needed 
+finds if part of a organization
+
+makes sure there is name, phone, region id, and what category it is.
+validates lenght of name has a min number of char that is 1 with a max of 255
+validates lenght of description has a max number of char is 255
+sees if a vaild phone number is there
+
+
+/
 class Ticket < ApplicationRecord
 
   belongs_to :region
