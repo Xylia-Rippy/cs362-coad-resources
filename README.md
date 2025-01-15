@@ -60,7 +60,9 @@ Start the app:
 ```
 rails server
 ```
+
 (rails server -b 0.0.0.0)
+
 ## Testing
 
 This project uses RSpec for testing.
@@ -127,7 +129,7 @@ Email Server (Gmail)
 Recaptcha
 
 ## Data model
-![erd](public/documentation/erd.jpg?raw=true)
 
+![erd](public/documentation/erd.jpg?raw=true)
 
 &copy; 2020 James Martinez, Ryder McDowell. All rights reserved.

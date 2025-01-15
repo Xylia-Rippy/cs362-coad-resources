@@ -65,7 +65,7 @@ footer {
 .dashboard-container {
   display: flex;
   flex-direction: row;
-  width: 100%,
+  width: 100%;
 }
 
 .sidenav {
@@ -87,7 +87,8 @@ footer {
   text-decoration: none;
 }
 
-.sidenav-tabs > li > a:hover, .sidenav-tabs > li > a:focus {
+.sidenav-tabs > li > a:hover,
+.sidenav-tabs > li > a:focus {
   background-color: #cccccc;
 }
 
@@ -114,7 +115,6 @@ footer {
 .field_with_errors .form-control {
   @extend .is-invalid;
 }
-
 
 /* Authentication */
 

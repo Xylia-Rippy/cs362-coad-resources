@@ -1,0 +1,4 @@
+{
+  "files.eol": "\n", // Enforce LF line endings
+  "editor.formatOnSave": true // Auto-format files on save
+}
