@@ -1,4 +1,5 @@
  # Different categories for disaster relief.
+ # Test
 
 class ResourceCategory < ApplicationRecord
 
