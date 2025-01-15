@@ -1,3 +1,5 @@
+ # Different categories for disaster relief.
+
 class ResourceCategory < ApplicationRecord
 
   has_and_belongs_to_many :organizations
