@@ -1,3 +1,4 @@
+#User file
 class User < ApplicationRecord
 
   enum role: [:admin, :organization]
