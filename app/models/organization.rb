@@ -1,3 +1,4 @@
+# Represent the Organization information
 class Organization < ApplicationRecord
 
   # Terms and conditions being pulled from the accessor.
