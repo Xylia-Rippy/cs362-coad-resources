@@ -6,9 +6,10 @@ finds if part of a organization
 
 makes sure there is name, phone, region id, and what category it is.
 validates lenght of name has a min number of char that is 1 with a max of 255
-validates lenght of description has a max number of char is 255
+validates lenght of description has a max number of char is 1020
 sees if a vaild phone number is there
 
+It is a ticket that holds the information of a emergemcy and what assestance is needed. 
 
 /
 class Ticket < ApplicationRecord
