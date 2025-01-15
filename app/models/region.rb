@@ -1,3 +1,10 @@
+/
+This is the region class it inherits data from ApplicationRecord
+This class checks the number of letters in the ticket min words 1, max words 255
+This class checks the amount of tickets
+This class checks the copy of same city
+If not def create new region
+/
 class Region < ApplicationRecord
 
   has_many :tickets
