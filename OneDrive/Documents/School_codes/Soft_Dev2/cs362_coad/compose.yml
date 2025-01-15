@@ -1,0 +1,16 @@
+services:
+  coad:
+    build: .
+
+    ports:
+      - "3000:3000"
+
+    volumes:
+      - ubuntu_lunar_home:/home/user
+      - ./cs362-coad-resources:/home/user/cs362-coad-resources
+
+    stdin_open: true
+    tty: true
+
+volumes:
+  ubuntu_lunar_home: {}
