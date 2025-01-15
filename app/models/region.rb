@@ -4,6 +4,10 @@ This class checks the number of letters in the ticket min words 1, max words 255
 This class checks the amount of tickets
 This class checks the copy of same city
 If not def create new region
+I currently do not know what to_s
+
+region holds the region names and making a name if one is not found
+
 /
 class Region < ApplicationRecord
 
