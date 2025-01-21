@@ -28,6 +28,22 @@ RSpec.describe Organization, type: :model do
     expect(org).to respond_to(:description)
   end
 
+  it "responds to primary_name" do
+    expect(org).to respond_to(:primary_name)
+  end
+
+  it "responds to secondary_name" do
+    expect(org).to respond_to(:secondary_name)
+  end
+
+  it "responds to secondary_phone" do
+    expect(org).to respond_to(:secondary_phone)
+  end
+
+  it "responds to title" do
+    expect(org).to respond_to(:title)
+  end
+
   it "has many users" do
     should have_many(:users)
   end
