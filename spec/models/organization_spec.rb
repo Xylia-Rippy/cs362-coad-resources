@@ -44,6 +44,10 @@ RSpec.describe Organization, type: :model do
     expect(org).to respond_to(:title)
   end
 
+  it "responds to rejection_reason" do
+    expect(org).to respond_to(:rejection_reason)
+  end
+
   it "has many users" do
     should have_many(:users)
   end
