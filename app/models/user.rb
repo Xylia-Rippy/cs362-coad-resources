@@ -1,4 +1,11 @@
-#User file
+# User Model
+# This model handles user data, authentication, and role management. 
+# - Users can have roles (:admin or :organization) with a default role of :organization.
+# - Includes authentication features using Devise (e.g., login, registration, password recovery).
+# - Validates email and password for proper format, length, and uniqueness.
+# - Users can optionally belong to an organization.
+# - Overrides `to_s` to return the user's email as a string representation.
+
 class User < ApplicationRecord
 
   enum role: [:admin, :organization]
