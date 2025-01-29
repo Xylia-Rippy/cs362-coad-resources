@@ -2,7 +2,28 @@ require 'rails_helper'
 
 RSpec.describe Ticket, type: :model do
 
-    let (:ticket) { Ticket.new }
+    let (:ticket) { Ticket.new(id: 123) }
+    let (:org_ticket){  
+    region = Region.create!(name: "region1")
+    resource = ResourceCategory.create!(name: "resource1")
+    org = Organization.create!(
+      name: "test",
+      email: "test@test.edu",
+      phone: "+1-668-578-9924",
+      status: :approved, 
+      primary_name: "test", 
+      secondary_name: "tset", 
+      secondary_phone: "+1-775-835-1459" 
+    )
+    Ticket.create!(
+      name: "ticket",
+      phone: "+1-555-555-1212",
+      region_id: region.id,
+      resource_category_id: resource.id,
+      organization_id: org.id,
+      closed: false
+
+    )}
 
     it "exists" do
         Ticket.new
@@ -50,12 +71,42 @@ RSpec.describe Ticket, type: :model do
           expect(ticket).to validate_length_of(:name).is_at_most(255)
           expect(ticket).to validate_length_of(:name).is_at_least(1)
         end
+
+
+        it "validates name length" do
+          expect(ticket).to validate_length_of(:description).is_at_most(1020)
+        end
+
+        it "validates presence of phone" do
+          expect(ticket).to validate_presence_of(:phone)
+        end
+
+        describe "validates if phony_plausible is true" do
+          it {should allow_value('+1 895-447-2315').for(:phone)}
+          it {should_not allow_value('895-447-2315').for(:phone)}
+          it {should_not allow_value('fish').for(:phone)}
+        end
+
+
+
       end
+
+
     
       describe "member function tests" do
         it "converts to string" do
           expect(ticket.to_s).to eq "Ticket 123"
         end
+
+        it "ticket is open" do
+          expect(ticket.open?).to eq true
+        end
+
+        it "ticket has an organization" do
+          expect(ticket.captured?).to eq false
+          expect(org_ticket.captured?).to eq true
+        end
+
       end
     
       describe "scope tests" do
@@ -77,6 +128,11 @@ RSpec.describe Ticket, type: :model do
     
           expect(Ticket.closed).to include(ticket)
           expect(Ticket.open).to_not include(ticket)
+        end
+
+        it "scopes organization ticket tests" do
+          expect(Ticket.organization(org_ticket.organization_id)).to include(org_ticket)
+          expect(Ticket.organization(ticket.organization_id)).to_not include(ticket)
         end
       end
         

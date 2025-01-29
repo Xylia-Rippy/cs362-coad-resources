@@ -74,5 +74,5 @@ RSpec.describe User, type: :model do
         expect(user.to_s).to eq("test@example.com")
       end
     end
-
+  end
 end
