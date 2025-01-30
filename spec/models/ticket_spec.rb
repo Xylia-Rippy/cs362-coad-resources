@@ -45,6 +45,8 @@ RSpec.describe Ticket, type: :model do
 
     )}
 
+
+
     it "exists" do
         Ticket.new
       end
@@ -164,6 +166,16 @@ RSpec.describe Ticket, type: :model do
         it "scopes closed_organization ticket tests" do
           expect(Ticket.closed_organization(org_ticket_closed.organization_id)).to include(org_ticket_closed)
           expect(Ticket.closed_organization(org_ticket.organization_id)).to_not include(org_ticket)
+        end
+
+        it "scopes region ticket tests" do
+          expect(Ticket.region(org_ticket.region_id)).to include(org_ticket)
+          expect(Ticket.region(org_ticket_closed.region_id)).to include(org_ticket_closed)
+        end
+
+        it "scopes resource_category ticket tests" do
+          expect(Ticket.resource_category(org_ticket.resource_category)).to include(org_ticket)
+          expect(Ticket.resource_category(org_ticket_closed.resource_category)).to include(org_ticket_closed)
         end
 
 
