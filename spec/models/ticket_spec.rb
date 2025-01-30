@@ -5,11 +5,11 @@ RSpec.describe Ticket, type: :model do
     let (:ticket) { Ticket.new(id: 123) }
     let (:org_ticket){  
     region = Region.create!(name: "region1")
-    resource = ResourceCategory.create!(name: "resource1")
+    resource = ResourceCategory.create!(name: "resource2")
     org = Organization.create!(
       name: "test",
-      email: "test@test.edu",
-      phone: "+1-668-578-9924",
+      email: "test1@test.edu",
+      phone: "+1-648-578-9924",
       status: :approved, 
       primary_name: "test", 
       secondary_name: "tset", 
@@ -17,11 +17,31 @@ RSpec.describe Ticket, type: :model do
     )
     Ticket.create!(
       name: "ticket",
-      phone: "+1-555-555-1212",
+      phone: "+1-556-555-1212",
       region_id: region.id,
       resource_category_id: resource.id,
       organization_id: org.id,
       closed: false
+    )}
+    let (:org_ticket_closed){  
+    region = Region.create!(name: "region2")
+    resource = ResourceCategory.create!(name: "resource1")
+    org = Organization.create!(
+      name: "test1",
+      email: "test@test.edu",
+      phone: "+1-668-578-9924",
+      status: :approved, 
+      primary_name: "test1", 
+      secondary_name: "tset1", 
+      secondary_phone: "+1-775-835-1469" 
+    )
+    Ticket.create!(
+      name: "ticket2",
+      phone: "+1-555-555-1212",
+      region_id: region.id,
+      resource_category_id: resource.id,
+      organization_id: org.id,
+      closed: true
 
     )}
 
@@ -134,7 +154,18 @@ RSpec.describe Ticket, type: :model do
           expect(Ticket.organization(org_ticket.organization_id)).to include(org_ticket)
           expect(Ticket.organization(ticket.organization_id)).to_not include(ticket)
         end
-      end
-        
 
+        
+        it "scopes all_organization ticket tests" do
+          expect(Ticket.all_organization()).to include(org_ticket)
+          expect(Ticket.all_organization()).to_not include(ticket)
+        end
+
+        it "scopes closed_organization ticket tests" do
+          expect(Ticket.closed_organization(org_ticket_closed.organization_id)).to include(org_ticket_closed)
+          expect(Ticket.closed_organization(org_ticket.organization_id)).to_not include(org_ticket)
+        end
+
+
+      end
 end
