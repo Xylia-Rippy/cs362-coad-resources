@@ -178,6 +178,5 @@ RSpec.describe Ticket, type: :model do
           expect(Ticket.resource_category(org_ticket_closed.resource_category)).to include(org_ticket_closed)
         end
 
-
       end
 end
