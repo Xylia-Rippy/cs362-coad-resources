@@ -45,6 +45,7 @@ RSpec.describe Region, type: :model do
   describe "member function tests" do
 
   it "returns the name as a string" do
+    region = Region.new(name: "Test Region")
     expect(region.to_s).to eq("Test Region")
   end
    # it "self.unspecified" do
