@@ -13,7 +13,7 @@ class ResourceCategory < ApplicationRecord
   scope :active, -> () { where active: true }
   scope :inactive, -> () { where active: false }
 
-  def self.unspecified
+  def self.unspecified # finds or creates unspecified resource category, returns a resourcecategory object with the name unspecified.
     ResourceCategory.find_or_create_by(name: 'Unspecified')
   end
 
