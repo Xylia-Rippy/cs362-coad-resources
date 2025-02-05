@@ -1,9 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe Region, type: :model do
-  let (:region) { 
-  Ticket.new(name: "Unspecified"
-  ) }
+  let (:region) {  Region.new }
   it "exists" do
     Region.new
 
@@ -48,8 +46,10 @@ RSpec.describe Region, type: :model do
     region = Region.new(name: "Test Region")
     expect(region.to_s).to eq("Test Region")
   end
-   # it "self.unspecified" do
-    #  expect(region).to eq "Unspecified"
-    #end
+
+
+    it "Region.unspecified is 'Unspecified'" do
+      expect(Region.unspecified.name).to eq "Unspecified"
+    end
   end
 end
