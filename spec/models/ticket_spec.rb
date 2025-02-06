@@ -2,6 +2,7 @@ require 'rails_helper'
 
 RSpec.describe Ticket, type: :model do
     let (:ticket) { FactoryBot.build(:ticket) }
+
     
 
 
@@ -84,6 +85,8 @@ RSpec.describe Ticket, type: :model do
         end
 
         it "ticket has an organization" do
+          organization = FactoryBot.build_stubbed(:organization, name: "organization1")
+          org_ticket = FactoryBot.build_stubbed(:ticket, organization_id: organization)
           expect(ticket.captured?).to eq false
           expect(org_ticket.captured?).to eq true
         end
@@ -98,7 +101,7 @@ RSpec.describe Ticket, type: :model do
         end
 
         it "scopes organization ticket tests" do
-          organization = FactoryBot.build_stubbed(organization, name: "organization1")
+          organization = FactoryBot.build_stubbed(:organization, name: "organization1")
           org_ticket = FactoryBot.build_stubbed(:ticket, organization_id: organization)
           ticket = FactoryBot.build_stubbed(:ticket, closed: true)
           expect(Ticket.organization(org_ticket.organization_id)).to include(org_ticket)
@@ -107,7 +110,7 @@ RSpec.describe Ticket, type: :model do
 
         
         it "scopes all_organization ticket tests" do
-          organization = FactoryBot.build_stubbed(organization, name: "organization1")
+          organization = FactoryBot.build_stubbed(:organization, name: "organization1")
           org_ticket = FactoryBot.build_stubbed(:ticket, organization_id: organization, closed: false)
           ticket = FactoryBot.build_stubbed(:ticket, closed: false)
           expect(Ticket.all_organization()).to include(org_ticket)
@@ -115,7 +118,7 @@ RSpec.describe Ticket, type: :model do
         end
 
         it "scopes closed_organization ticket tests" do
-          organization = FactoryBot.build_stubbed(organization, name: "organization1")
+          organization = FactoryBot.build_stubbed(:organization, name: "organization1")
           org_ticket = FactoryBot.build_stubbed(:ticket, organization_id: organization, closed: false)
           org_ticket_closed = FactoryBot.build_stubbed(:ticket, organization_id: organization, closed: true)
           expect(Ticket.closed_organization(org_ticket_closed.organization_id)).to include(org_ticket_closed)
