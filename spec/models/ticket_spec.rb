@@ -174,8 +174,8 @@ RSpec.describe Ticket, type: :model do
         end
 
         it "scopes resource_category ticket tests" do
-          expect(Ticket.resource_category(org_ticket.resource_category)).to include(org_ticket)
-          expect(Ticket.resource_category(org_ticket_closed.resource_category)).to include(org_ticket_closed)
+          expect(Ticket.resource_category(org_ticket.resource_category_id)).to include(org_ticket)
+          expect(Ticket.resource_category(org_ticket_closed.resource_category_id)).to include(org_ticket_closed)
         end
 
       end
