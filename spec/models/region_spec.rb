@@ -1,24 +1,17 @@
 require 'rails_helper'
 
 RSpec.describe Region, type: :model do
-  let (:region) { 
-  Ticket.new(name: "Unspecified"
-  ) }
-  it "exists" do
-    Region.new
-
-  end
+  let (:region) { FactoryBot.build(:region) }
 
   describe "attribute tests" do
     it "has a name" do
-      region = Region.new
       expect(region).to respond_to(:name)
     end
 
     it "has a string representation that is its name" do
-      name = 'Mt. Hood'
-      region = Region.new(name: name)
+      region = FactoryBot.build_stubbed(:region, name: 'Mt Hood') 
       result = region.to_s
+      expect(result).to eq 'Mt Hood'
     end
 
     it "has many tickets" do
@@ -45,11 +38,13 @@ RSpec.describe Region, type: :model do
   describe "member function tests" do
 
   it "returns the name as a string" do
-    region = Region.new(name: "Test Region")
+    region = FactoryBot.build_stubbed(:region, name: "Test Region")
     expect(region.to_s).to eq("Test Region")
   end
-   # it "self.unspecified" do
-    #  expect(region).to eq "Unspecified"
-    #end
+
+
+    it "Region.unspecified is 'Unspecified'" do
+      expect(Region.unspecified.name).to eq "Unspecified"
+    end
   end
 end
