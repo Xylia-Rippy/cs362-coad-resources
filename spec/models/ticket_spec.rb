@@ -1,49 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe Ticket, type: :model do
-
-    let (:ticket) { Ticket.new(id: 123) }
-    let (:org_ticket){  
-    region = Region.create!(name: "region1")
-    resource = ResourceCategory.create!(name: "resource2")
-    org = Organization.create!(
-      name: "test",
-      email: "test1@test.edu",
-      phone: "+1-648-578-9924",
-      status: :approved, 
-      primary_name: "test", 
-      secondary_name: "tset", 
-      secondary_phone: "+1-775-835-1459" 
-    )
-    Ticket.create!(
-      name: "ticket",
-      phone: "+1-556-555-1212",
-      region_id: region.id,
-      resource_category_id: resource.id,
-      organization_id: org.id,
-      closed: false
-    )}
-    let (:org_ticket_closed){  
-    region = Region.create!(name: "region2")
-    resource = ResourceCategory.create!(name: "resource1")
-    org = Organization.create!(
-      name: "test1",
-      email: "test@test.edu",
-      phone: "+1-668-578-9924",
-      status: :approved, 
-      primary_name: "test1", 
-      secondary_name: "tset1", 
-      secondary_phone: "+1-775-835-1469" 
-    )
-    Ticket.create!(
-      name: "ticket2",
-      phone: "+1-555-555-1212",
-      region_id: region.id,
-      resource_category_id: resource.id,
-      organization_id: org.id,
-      closed: true
-
-    )}
+    let (:ticket) { FactoryBot.build(:ticket) }
+    
 
 
 
@@ -133,49 +92,50 @@ RSpec.describe Ticket, type: :model do
     
       describe "scope tests" do
         it "scopes closed tickets" do
-          region = Region.create!(name: "region1")
-          resource = ResourceCategory.create!(name: "resource1")
-    
-          ticket = Ticket.create!(
-            name: "ticket",
-            phone: "+1-555-555-1212",
-            region_id: region.id,
-            resource_category_id: resource.id,
-            closed: true
-          )
-    
-          # How we look at scopes:
-          #Ticket.closed
-          #Ticket.open
-    
+          ticket = FactoryBot.build_stubbed(:ticket, closed: true)
           expect(Ticket.closed).to include(ticket)
           expect(Ticket.open).to_not include(ticket)
         end
 
         it "scopes organization ticket tests" do
+          organization = FactoryBot.build_stubbed(organization, name: "organization1")
+          org_ticket = FactoryBot.build_stubbed(:ticket, organization_id: organization)
+          ticket = FactoryBot.build_stubbed(:ticket, closed: true)
           expect(Ticket.organization(org_ticket.organization_id)).to include(org_ticket)
           expect(Ticket.organization(ticket.organization_id)).to_not include(ticket)
         end
 
         
         it "scopes all_organization ticket tests" do
+          organization = FactoryBot.build_stubbed(organization, name: "organization1")
+          org_ticket = FactoryBot.build_stubbed(:ticket, organization_id: organization, closed: false)
+          ticket = FactoryBot.build_stubbed(:ticket, closed: false)
           expect(Ticket.all_organization()).to include(org_ticket)
           expect(Ticket.all_organization()).to_not include(ticket)
         end
 
         it "scopes closed_organization ticket tests" do
+          organization = FactoryBot.build_stubbed(organization, name: "organization1")
+          org_ticket = FactoryBot.build_stubbed(:ticket, organization_id: organization, closed: false)
+          org_ticket_closed = FactoryBot.build_stubbed(:ticket, organization_id: organization, closed: true)
           expect(Ticket.closed_organization(org_ticket_closed.organization_id)).to include(org_ticket_closed)
           expect(Ticket.closed_organization(org_ticket.organization_id)).to_not include(org_ticket)
         end
 
         it "scopes region ticket tests" do
-          expect(Ticket.region(org_ticket.region_id)).to include(org_ticket)
-          expect(Ticket.region(org_ticket_closed.region_id)).to include(org_ticket_closed)
+          region = FactoryBot.build_stubbed(:region, name: "region1")
+          region_ticket = FactoryBot.build_stubbed(:ticket, organization_id: region, closed: false)
+          region_ticket_closed = FactoryBot.build_stubbed(:ticket, organization_id: region, closed: true)
+          expect(Ticket.region(region_ticket.region_id)).to include(region_ticket)
+          expect(Ticket.region(region_ticket_closed.region_id)).to include(region_ticket_closed)
         end
 
         it "scopes resource_category ticket tests" do
-          expect(Ticket.resource_category(org_ticket.resource_category_id)).to include(org_ticket)
-          expect(Ticket.resource_category(org_ticket_closed.resource_category_id)).to include(org_ticket_closed)
+          resource = FactoryBot.build_stubbed(:resource_category, name: "resource1")
+          resource_ticket = FactoryBot.build_stubbed(:ticket, organization_id: resource, closed: false)
+          resource_ticket_closed = FactoryBot.build_stubbed(:ticket, organization_id: resource, closed: true)
+          expect(Ticket.resource_category(resource_ticket.resource_category_id)).to include(resource_ticket)
+          expect(Ticket.resource_category(resource_ticket_closed.resource_category_id)).to include(resource_ticket_closed)
         end
 
       end
