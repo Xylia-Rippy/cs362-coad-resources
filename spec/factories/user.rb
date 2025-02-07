@@ -1,12 +1,11 @@
 FactoryBot.define do
   factory :user do
-    email { "test@example.com" }
-    phone { "123-456-7890" }
+    sequence(:email) { |n| "test#{n}@example.com" } # Ensure unique email
     password { "password" }
-    role { :organization }
+    role { 1 }
 
     trait :admin do
-      role { :admin }
+      role { 0 }
     end
 
     trait :with_organization do
