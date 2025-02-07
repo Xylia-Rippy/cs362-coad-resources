@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe Ticket, type: :model do
     let (:ticket) { FactoryBot.build(:ticket) }
-
+    let (:ticket_without_organization) { FactoryBot.build(:ticket_without_organization) }   
     
 
 
@@ -85,10 +85,9 @@ RSpec.describe Ticket, type: :model do
         end
 
         it "ticket has an organization" do
-          ticket = = FactoryBot.build_stubbed(:ticket, organization_id: nil)
           organization = FactoryBot.build_stubbed(:organization, name: "organization1")
           org_ticket = FactoryBot.build_stubbed(:ticket, organization_id: organization)
-          expect(ticket.captured?).to eq false
+          expect(ticket_without_organization.captured?).to eq false
           expect(org_ticket.captured?).to eq true
         end
 
@@ -104,7 +103,7 @@ RSpec.describe Ticket, type: :model do
         it "scopes organization ticket tests" do
           organization = FactoryBot.build_stubbed(:organization, name: "organization1")
           org_ticket = FactoryBot.build_stubbed(:ticket, organization_id: organization)
-          ticket = FactoryBot.build_stubbed(:ticket, closed: true)
+          ticket = FactoryBot.build_stubbed(:ticket_without_organization, closed: true)
           expect(Ticket.organization(org_ticket.organization_id)).to include(org_ticket)
           expect(Ticket.organization(ticket.organization_id)).to_not include(ticket)
         end
@@ -113,7 +112,7 @@ RSpec.describe Ticket, type: :model do
         it "scopes all_organization ticket tests" do
           organization = FactoryBot.build_stubbed(:organization, name: "organization1")
           org_ticket = FactoryBot.build_stubbed(:ticket, organization_id: organization, closed: false)
-          ticket = FactoryBot.build_stubbed(:ticket, closed: false)
+          ticket = FactoryBot.build_stubbed(:ticket_without_organization, closed: false)
           expect(Ticket.all_organization()).to include(org_ticket)
           expect(Ticket.all_organization()).to_not include(ticket)
         end
