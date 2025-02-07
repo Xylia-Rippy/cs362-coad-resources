@@ -1,10 +1,16 @@
 require 'rails_helper'
 
 RSpec.describe Ticket, type: :model do
+    
+  before(:each) do
+    Ticket.destroy_all # Clears all tickets to prevent duplicate names
+  end
+  
+  
+ 
     let (:ticket) { FactoryBot.build(:ticket) }
     let (:ticket_without_organization) { FactoryBot.build(:ticket_without_organization) }   
-    
-
+  
 
 
     it "exists" do
@@ -84,59 +90,60 @@ RSpec.describe Ticket, type: :model do
           expect(ticket.open?).to eq true
         end
 
+
+
         it "ticket has an organization" do
-          organization = FactoryBot.build_stubbed(:organization, name: "organization1")
-          org_ticket = FactoryBot.build_stubbed(:ticket, organization_id: organization)
+          organization = FactoryBot.create(:organization)
+          ticket_with_org = FactoryBot.create(:ticket, organization: organization)
           expect(ticket_without_organization.captured?).to eq false
-          expect(org_ticket.captured?).to eq true
+          expect(ticket_with_org.captured?).to eq true
         end
 
       end
     
       describe "scope tests" do
         it "scopes closed tickets" do
-          ticket = FactoryBot.build_stubbed(:ticket, closed: true)
+          ticket = FactoryBot.create(:ticket, closed: true)
           expect(Ticket.closed).to include(ticket)
           expect(Ticket.open).to_not include(ticket)
         end
 
         it "scopes organization ticket tests" do
-          organization = FactoryBot.build_stubbed(:organization, name: "organization1")
-          org_ticket = FactoryBot.build_stubbed(:ticket, organization_id: organization)
-          ticket = FactoryBot.build_stubbed(:ticket_without_organization, closed: true)
+          organization1 = FactoryBot.create(:organization)
+          org_ticket = FactoryBot.create(:ticket, organization: organization1, closed: false)
           expect(Ticket.organization(org_ticket.organization_id)).to include(org_ticket)
-          expect(Ticket.organization(ticket.organization_id)).to_not include(ticket)
+          expect(Ticket.organization(ticket_without_organization.organization_id)).to_not include(ticket_without_organization)
         end
 
         
         it "scopes all_organization ticket tests" do
-          organization = FactoryBot.build_stubbed(:organization, name: "organization1")
-          org_ticket = FactoryBot.build_stubbed(:ticket, organization_id: organization, closed: false)
-          ticket = FactoryBot.build_stubbed(:ticket_without_organization, closed: false)
-          expect(Ticket.all_organization()).to include(org_ticket)
-          expect(Ticket.all_organization()).to_not include(ticket)
+          organization2 = FactoryBot.create(:organization)
+          org_ticket2 = FactoryBot.create(:ticket, organization: organization2, closed: false)
+          ticket_without_organization = FactoryBot.create(:ticket_without_organization, closed: false)
+          expect(Ticket.all_organization).to include(org_ticket2)
+          expect(Ticket.all_organization).to_not include(ticket_without_organization)
         end
 
         it "scopes closed_organization ticket tests" do
-          organization = FactoryBot.build_stubbed(:organization, name: "organization1")
-          org_ticket = FactoryBot.build_stubbed(:ticket, organization_id: organization, closed: false)
-          org_ticket_closed = FactoryBot.build_stubbed(:ticket, organization_id: organization, closed: true)
-          expect(Ticket.closed_organization(org_ticket_closed.organization_id)).to include(org_ticket_closed)
-          expect(Ticket.closed_organization(org_ticket.organization_id)).to_not include(org_ticket)
+          organization3 = FactoryBot.create(:organization)
+          closed_org_ticket = FactoryBot.create(:ticket, organization: organization3, closed: true)
+          open_org_ticket = FactoryBot.create(:ticket, organization: organization3, closed: false)
+          expect(Ticket.closed_organization(closed_org_ticket.organization_id)).to include(closed_org_ticket)
+          expect(Ticket.closed_organization(open_org_ticket.organization_id)).to_not include(open_org_ticket)
         end
 
         it "scopes region ticket tests" do
-          region = FactoryBot.build_stubbed(:region, name: "region1")
-          region_ticket = FactoryBot.build_stubbed(:ticket, organization_id: region, closed: false)
-          region_ticket_closed = FactoryBot.build_stubbed(:ticket, organization_id: region, closed: true)
+          region = FactoryBot.create(:region)
+          region_ticket = FactoryBot.create(:ticket, region: region, closed: false)
+          region_ticket_closed = FactoryBot.create(:ticket, region: region, closed: true)
           expect(Ticket.region(region_ticket.region_id)).to include(region_ticket)
           expect(Ticket.region(region_ticket_closed.region_id)).to include(region_ticket_closed)
         end
 
         it "scopes resource_category ticket tests" do
-          resource = FactoryBot.build_stubbed(:active_resource_category, name: "resource1")
-          resource_ticket = FactoryBot.build_stubbed(:ticket, organization_id: resource, closed: false)
-          resource_ticket_closed = FactoryBot.build_stubbed(:ticket, organization_id: resource, closed: true)
+          resource_category = FactoryBot.create(:resource_category)
+          resource_ticket = FactoryBot.create(:ticket, resource_category: resource_category, closed: false)
+          resource_ticket_closed = FactoryBot.create(:ticket, resource_category: resource_category, closed: true)
           expect(Ticket.resource_category(resource_ticket.resource_category_id)).to include(resource_ticket)
           expect(Ticket.resource_category(resource_ticket_closed.resource_category_id)).to include(resource_ticket_closed)
         end
