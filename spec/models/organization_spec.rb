@@ -1,29 +1,14 @@
 require 'rails_helper'
 
 RSpec.describe Organization, type: :model do
-  
-  let (:organization) do
-    Organization.new(
-      name: "Test Organization",
-      status: :submitted,
-      phone: "123-456-7890",
-      email: "test@example.com",
-      description: "Test description",
-      rejection_reason: nil,
-      liability_insurance: false,
-      primary_name: "Primary Contact",
-      secondary_name: "Secondary Contact",
-      secondary_phone: "987-654-3210",
-      title: "Manager",
-      transportation: :yes
-      )
+  let(:organization) { create(:organization) }
 
   it "exists" do
-    Organization.new
+    expect(build(:organization)).to be_a(Organization)
   end
 
   describe "validations" do
-    it "is valid with valid attrabutes" do
+    it "is valid with valid attributes" do
       expect(organization).to be_valid
     end
 
@@ -32,7 +17,7 @@ RSpec.describe Organization, type: :model do
       expect(organization).to_not be_valid
     end
 
-    it "is invalid without a email" do
+    it "is invalid without an email" do
       organization.email = nil
       expect(organization).to_not be_valid
     end
@@ -53,36 +38,25 @@ RSpec.describe Organization, type: :model do
     end
 
     it "validates the length of email" do
-      organization.email = "a" *256 +"@example.com"
+      organization.email = "a" * 256 + "@example.com"
       expect(organization).to_not be_valid
     end
 
     it "validates the uniqueness of email" do
-      Organization.create!(
-        name: "Another Organization",
-        phone: "123-555-6789",
-        email: "test@example.com",
-        primary_name: "Primary",
-        secondary_name: "Secondary",
-        secondary_phone: "123-555-1234",
-        status: :submitted,
-        transportation: :yes
-      )
-      expect(organization).to_not be_valid
+      create(:organization, email: "test@example.com")
+      expect(build(:organization, email: "test@example.com")).to_not be_valid
     end
-  
 
     it "validates the uniqueness of name" do
       create(:organization, name: organization.name)
-      expect(organization).to_not be_valid
+      expect(build(:organization, name: organization.name)).to_not be_valid
     end
 
-   it "validates the length of description" do
+    it "validates the length of description" do
       organization.description = "a" * 1021
       expect(organization).to_not be_valid
     end
   end
-
 
   describe "associations" do
     it { should have_many(:users) }
@@ -101,8 +75,8 @@ RSpec.describe Organization, type: :model do
   end
 
   describe "callbacks" do
-    it "sets defult status to submitted for new records" do
-      new_org = Organization.new
+    it "sets default status to submitted for new records" do
+      new_org = build(:organization)
       expect(new_org.status).to eq("submitted")
     end
   end
@@ -115,13 +89,11 @@ RSpec.describe Organization, type: :model do
 
     it "rejects the organization" do
       organization.reject
-      expect(organization).to eq("rejected")
+      expect(organization.status).to eq("rejected")
     end
 
     it "returns the name as a string" do
       expect(organization.to_s).to eq("Test Organization")
     end
   end
-
-end
 end
