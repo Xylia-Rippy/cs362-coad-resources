@@ -85,6 +85,7 @@ RSpec.describe Ticket, type: :model do
         end
 
         it "ticket has an organization" do
+          ticket = = FactoryBot.build_stubbed(:ticket, organization_id: nil)
           organization = FactoryBot.build_stubbed(:organization, name: "organization1")
           org_ticket = FactoryBot.build_stubbed(:ticket, organization_id: organization)
           expect(ticket.captured?).to eq false
@@ -134,7 +135,7 @@ RSpec.describe Ticket, type: :model do
         end
 
         it "scopes resource_category ticket tests" do
-          resource = FactoryBot.build_stubbed(:resource_category, name: "resource1")
+          resource = FactoryBot.build_stubbed(:active_resource_category, name: "resource1")
           resource_ticket = FactoryBot.build_stubbed(:ticket, organization_id: resource, closed: false)
           resource_ticket_closed = FactoryBot.build_stubbed(:ticket, organization_id: resource, closed: true)
           expect(Ticket.resource_category(resource_ticket.resource_category_id)).to include(resource_ticket)
