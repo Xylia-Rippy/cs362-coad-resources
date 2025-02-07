@@ -4,7 +4,7 @@ RSpec.describe ResourceCategory, type: :model do
   
 
   # let (:resource) { ResourceCategory.new(name: "Test ResourceCategory", active: true) }
-  let (:active_resource) { FactoryBot.create(:active_resource_category) }
+  let (:active_resource) { FactoryBot.create(:resource_category) }
   let (:inactive_resource) { FactoryBot.create(:inactive_resource_category) }
 
 
@@ -40,8 +40,8 @@ RSpec.describe ResourceCategory, type: :model do
     end
 
     it "validates uniqueness of name" do
-      create(:active_resource_category)
-      expect(build(:active_resource_category)).to_not be_valid
+      create(:resource_category)
+      expect(build(:resource_category)).to_not be_valid
     end
   end
 

@@ -12,8 +12,8 @@ RSpec.describe Ticket, type: :model do
       end
     describe "attribute tests" do
         it "responds to name" do
-        expect(ticket).to respond_to(:name)
-            end
+          expect(ticket).to respond_to(:name)
+        end
 
         it "responds to description" do
             expect(ticket).to respond_to(:description)

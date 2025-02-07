@@ -6,7 +6,7 @@ FactoryBot.define do
       phone {'+1 895-447-2315'}
       closed {false}
       association :region
-      association :active_resource_category
+      association :resource_category
       association :organization 
 
     end
@@ -17,7 +17,7 @@ FactoryBot.define do
       phone {'+1 895-447-2315'}
       closed {false}
       association :region
-      association :active_resource_category
+      association :resource_category
       organization_id {nil}
     end
 
