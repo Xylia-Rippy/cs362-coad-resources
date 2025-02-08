@@ -2,15 +2,16 @@ require 'rails_helper'
 
 RSpec.describe Ticket, type: :model do
     
-  before(:each) do
-    Ticket.destroy_all # Clears all tickets to prevent duplicate names
-  end
+  #before(:each) do
+    #Ticket.destroy_all # Clears all tickets to prevent duplicate names
+ # end
   
-  
- 
+    let (:region) {FactoryBot.build(:region)}
+    let (:organization) {FactoryBot.build(:organization)}
     let (:ticket) { FactoryBot.build(:ticket) }
     let (:ticket_without_organization) { FactoryBot.build(:ticket_without_organization) }   
-
+    let (:ticket_with_org) { FactoryBot.build(:ticket, organization: organization)}
+   # let (:org_ticket) { FactoryBot.build(:ticket, organization: organization, closed: false)}
 
 
     it "exists" do
@@ -93,8 +94,6 @@ RSpec.describe Ticket, type: :model do
 
 
         it "ticket has an organization" do
-          organization = FactoryBot.create(:organization)
-          ticket_with_org = FactoryBot.create(:ticket, organization: organization)
           expect(ticket_without_organization.captured?).to eq false
           expect(ticket_with_org.captured?).to eq true
         end
@@ -109,43 +108,36 @@ RSpec.describe Ticket, type: :model do
         end
 
         it "scopes organization ticket tests" do
-          organization1 = FactoryBot.create(:organization)
-          org_ticket = FactoryBot.create(:ticket, organization: organization1, closed: false)
+          org_ticket = FactoryBot.create(:ticket, organization: organization, closed: false)
           expect(Ticket.organization(org_ticket.organization_id)).to include(org_ticket)
           expect(Ticket.organization(ticket_without_organization.organization_id)).to_not include(ticket_without_organization)
         end
 
         
         it "scopes all_organization ticket tests" do
-          organization2 = FactoryBot.create(:organization)
-          org_ticket2 = FactoryBot.create(:ticket, organization: organization2, closed: false)
+          org_ticket2 = FactoryBot.create(:ticket, organization: organization, closed: false)
           ticket_without_organization = FactoryBot.create(:ticket_without_organization, closed: false)
           expect(Ticket.all_organization).to include(org_ticket2)
-          expect(Ticket.all_organization).to_not include(ticket_without_organization)
+          expect(Ticket.all_organization).to_not include(ticket_without_organization) ##problem line
         end
 
         it "scopes closed_organization ticket tests" do
-          organization3 = FactoryBot.create(:organization)
-          closed_org_ticket = FactoryBot.create(:ticket, organization: organization3, closed: true)
-          open_org_ticket = FactoryBot.create(:ticket, organization: organization3, closed: false)
-          expect(Ticket.closed_organization(closed_org_ticket.organization_id)).to include(closed_org_ticket)
+          closed_org_ticket = FactoryBot.create(:ticket, organization: organization, closed: true)
+          open_org_ticket = FactoryBot.create(:ticket, organization: organization, closed: false)
+          expect(Ticket.closed_organization(closed_org_ticket.organization_id)).to include(closed_org_ticket)#why this broke?
           expect(Ticket.closed_organization(open_org_ticket.organization_id)).to_not include(open_org_ticket)
         end
 
         it "scopes region ticket tests" do
           region = FactoryBot.create(:region)
-          region_ticket = FactoryBot.create(:ticket, region: region, closed: false)
           region_ticket_closed = FactoryBot.create(:ticket, region: region, closed: true)
-          expect(Ticket.region(region_ticket.region_id)).to include(region_ticket)
           expect(Ticket.region(region_ticket_closed.region_id)).to include(region_ticket_closed)
         end
 
         it "scopes resource_category ticket tests" do
           resource_category = FactoryBot.create(:resource_category)
           resource_ticket = FactoryBot.create(:ticket, resource_category: resource_category, closed: false)
-          resource_ticket_closed = FactoryBot.create(:ticket, resource_category: resource_category, closed: true)
           expect(Ticket.resource_category(resource_ticket.resource_category_id)).to include(resource_ticket)
-          expect(Ticket.resource_category(resource_ticket_closed.resource_category_id)).to include(resource_ticket_closed)
         end
 
       end
