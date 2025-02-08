@@ -10,7 +10,7 @@ RSpec.describe Ticket, type: :model do
  
     let (:ticket) { FactoryBot.build(:ticket) }
     let (:ticket_without_organization) { FactoryBot.build(:ticket_without_organization) }   
-  
+
 
 
     it "exists" do
