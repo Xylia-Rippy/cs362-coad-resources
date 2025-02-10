@@ -113,7 +113,7 @@ RSpec.describe Ticket, type: :model do
           expect(Ticket.organization(ticket_without_organization.organization_id)).to_not include(ticket_without_organization)
         end
 
-        /
+        
         it "scopes all_organization ticket tests" do
           org_ticket2 = FactoryBot.create(:ticket, organization: organization, closed: false)
           ticket_without_organization = FactoryBot.create(:ticket_without_organization, closed: false)
@@ -127,7 +127,7 @@ RSpec.describe Ticket, type: :model do
           expect(Ticket.closed_organization(closed_org_ticket.organization_id)).to include(closed_org_ticket)#why this broke?
           expect(Ticket.closed_organization(open_org_ticket.organization_id)).to_not include(open_org_ticket)
         end
-        /
+        
         it "scopes region ticket tests" do
           region = FactoryBot.create(:region)
           region_ticket_closed = FactoryBot.create(:ticket, region: region, closed: true)
