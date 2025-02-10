@@ -47,25 +47,21 @@ RSpec.describe ResourceCategory, type: :model do
 
   describe "member function tests" do
     it "activates resource" do
-      resource = ResourceCategory.new(name: "Test ResourceCategory", active: false)
-
-      resource.activate
-      expect(resource.active).to eq(true)
+      inactive_resource.activate
+      expect(inactive_resource.active).to eq(true)
     end
 
     it "deactivates resource" do
-      resource = ResourceCategory.new(name: "Test ResourceCategory", active: true)
-
-      resource.deactivate
-      expect(resource.active).to eq(false)
+      active_resource.deactivate
+      expect(active_resource.active).to eq(false)
     end
 
     it "checks if resource is inactive" do
-      resource = ResourceCategory.new(name: "Test ResourceCategory", active: true)
-      expect(resource.inactive?).to eq(false)
+      expect(active_resource.inactive?).to eq(false)
+    end
 
-      resource = ResourceCategory.new(name: "Test ResourceCategory", active: false)
-      expect(resource.inactive?).to eq(true)
+    it "checks if resource is active" do
+      expect(inactive_resource.inactive?).to eq(true)
     end
 
     it "returns the name as a string" do
@@ -83,17 +79,13 @@ RSpec.describe ResourceCategory, type: :model do
 
   describe "scope tests" do
     it "scopes active resources" do
-      resource = ResourceCategory.create!(name: "Test ResourceCategory", active: true)
-
-      expect(ResourceCategory.active).to include(resource)
-      expect(ResourceCategory.inactive).to_not include(resource)
+      expect(ResourceCategory.active).to include(active_resource)
+      expect(ResourceCategory.inactive).to_not include(active_resource)
     end
 
     it "scopes inactive resources" do
-      resource = ResourceCategory.create!(name: "Test ResourceCategory", active: false)
-
-      expect(ResourceCategory.active).to_not include(resource)
-      expect(ResourceCategory.inactive).to include(resource)
+      expect(ResourceCategory.active).to_not include(inactive_resource)
+      expect(ResourceCategory.inactive).to include(inactive_resource)
     end
   end
 end
