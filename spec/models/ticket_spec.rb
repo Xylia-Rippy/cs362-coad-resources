@@ -84,7 +84,8 @@ RSpec.describe Ticket, type: :model do
     
       describe "member function tests" do
         it "converts to string" do
-          expect(ticket.to_s).to eq "Ticket 123"
+          id_test = create(:ticket, id: "123")
+          expect(id_test.to_s).to eq "Ticket 123"
         end
 
         it "ticket is open" do
@@ -118,13 +119,13 @@ RSpec.describe Ticket, type: :model do
           org_ticket2 = FactoryBot.create(:ticket, organization: organization, closed: false)
           ticket_without_organization = FactoryBot.create(:ticket_without_organization, closed: false)
           expect(Ticket.all_organization).to include(org_ticket2)
-          expect(Ticket.all_organization).to_not include(ticket_without_organization) ##problem line
+          expect(Ticket.all_organization).to_not include(ticket_without_organization) 
         end
 
         it "scopes closed_organization ticket tests" do
           closed_org_ticket = FactoryBot.create(:ticket, organization: organization, closed: true)
           open_org_ticket = FactoryBot.create(:ticket, organization: organization, closed: false)
-          expect(Ticket.closed_organization(closed_org_ticket.organization_id)).to include(closed_org_ticket)#why this broke?
+          expect(Ticket.closed_organization(closed_org_ticket.organization_id)).to include(closed_org_ticket)
           expect(Ticket.closed_organization(open_org_ticket.organization_id)).to_not include(open_org_ticket)
         end
         

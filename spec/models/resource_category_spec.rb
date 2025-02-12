@@ -40,8 +40,8 @@ RSpec.describe ResourceCategory, type: :model do
     end
 
     it "validates uniqueness of name" do
-      create(:resource_category)
-      expect(build(:resource_category)).to_not be_valid
+      create(:resource_category, name: "dave")
+      expect(build(:resource_category, name: "dave")).to_not be_valid
     end
   end
 
@@ -65,7 +65,8 @@ RSpec.describe ResourceCategory, type: :model do
     end
 
     it "returns the name as a string" do
-      expect(active_resource.to_s).to eq("Test ResourceCategory")
+      string_test = create(:resource_category, name: "Test ResourceCategory")
+      expect(string_test.to_s).to eq("Test ResourceCategory")
     end
   end
 
