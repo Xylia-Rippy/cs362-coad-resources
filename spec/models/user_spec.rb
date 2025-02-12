@@ -13,6 +13,11 @@ RSpec.describe User, type: :model do
       expect(user).not_to be_valid
     end
 
+    # it "is invalid without an name" do
+    #   user.name = nil
+    #   expect(user).not_to be_valid
+    # end
+
     it "is invalid without a password" do
       user.password = nil
       expect(user).not_to be_valid
@@ -50,5 +55,9 @@ RSpec.describe User, type: :model do
     it "returns the user's email as a string representation" do
       expect(user.to_s).to eq(user.email)
     end
+
+    # it "returns the user's name as a string representation" do
+    #   expect(user.to_s).to eq(user.name)
+    # end
   end
 end

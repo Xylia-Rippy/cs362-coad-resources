@@ -1,15 +1,22 @@
 FactoryBot.define do
   factory :user do
-    sequence(:email) { |n| "test#{n}@example.com" } # Ensure unique email
-    password { "password" }
-    role { 1 }
+    email
+    password { "fake_password" }
 
-    trait :admin do
-      role { 0 }
+    before(:create) { |user| user.skip_confirmation! }
+
+    trait :organization_approved do
+      role { :organization }
+      organization_id { create(:organization, :approved).id }
     end
 
-    trait :with_organization do
-      association :organization
+    trait :organization_unapproved do
+      role { :organization }
+      organization_id { create(:organization).id }
+    end
+
+    trait :admin do
+      role { :admin }
     end
   end
 end
