@@ -1,8 +1,8 @@
 require 'rails_helper'
 
-#   tickets POST            /tickets(.:format)                 tickets#create fully_done
+#   tickets POST            /tickets(.:format)                 tickets#create  fully_done
 #   new_ticket GET          /tickets/new(.:format)             tickets#new     fully_done
-#   ticket GET              /tickets/:id(.:format)             tickets#show
+#   ticket GET              /tickets/:id(.:format)             tickets#show    
 #   capture_ticket POST     /tickets/:id/capture(.:format)     tickets#capture
 #   release_ticket POST     /tickets/:id/release(.:format)     tickets#release
 #   close_ticket PATCH      /tickets/:id/close(.:format)       tickets#close
@@ -109,6 +109,7 @@ RSpec.describe TicketsController, type: :controller do
         let(:user) { FactoryBot.create(:user, :admin) }
         before(:each) { sign_in user }
         it { expect(post(:create, params: { ticket: FactoryBot.attributes_for(:ticket) })).to be_successful }
+
         it {    region = create(:region)
                 organization = create(:organization)
                 resource_category = create(:resource_category)
@@ -119,7 +120,7 @@ RSpec.describe TicketsController, type: :controller do
                     organization_id: organization.id,
                     resource_category_id: resource_category.id
                 )})
-        expect(response).to redirect_to ticket_submitted_path } #it works
+            expect(response).to redirect_to ticket_submitted_path } #it works
 
         it { expect(get(:new)).to be_successful }
         it {    show_test2 = create(:ticket)
