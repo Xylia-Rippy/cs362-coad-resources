@@ -61,7 +61,8 @@ RSpec.describe TicketsController, type: :controller do
                 expect(response).to redirect_to ticket_submitted_path } #it works
 
         it { expect(get(:new)).to be_successful }
-        it {show_test1 = create(:ticket)
+
+        it {    show_test1 = create(:ticket)
                 get( :show, params: { id: show_test1.id})
                 expect(response).to redirect_to dashboard_path }
         
@@ -94,8 +95,8 @@ RSpec.describe TicketsController, type: :controller do
         it { expect(get(:new)).to be_successful }
 
 
-        it {show_test1 = create(:ticket)
-                get( :show, params: { id: show_test1.id})
+        it {    show_test3 = create(:ticket)
+                get( :show, params: { id: show_test3.id})
                 expect(response).to be_successful }
         
 
@@ -123,6 +124,8 @@ RSpec.describe TicketsController, type: :controller do
             expect(response).to redirect_to ticket_submitted_path } #it works
 
         it { expect(get(:new)).to be_successful }
+
+
         it {    show_test2 = create(:ticket)
                 get( :show, params: { id: show_test2.id})
                 expect(response).to be_successful }
