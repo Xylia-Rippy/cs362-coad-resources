@@ -23,7 +23,10 @@ class TicketsController < ApplicationController
   end
 
   def show
+
+    pp current_user&.organization&.approved? 
     return redirect_to dashboard_path unless current_user&.organization&.approved? || current_user&.admin?
+    pp "done"
     @ticket = Ticket.find(params[:id])
   end
 
