@@ -14,8 +14,10 @@ RSpec.describe TicketsController, type: :controller do
     describe 'as a logged out user' do
 
         let(:user) { FactoryBot.create(:user) }
+
         it {    post(:create, params: { ticket: FactoryBot.attributes_for(:ticket) })
                 expect(response).to be_successful } #fail
+
         it {    region = create(:region)
                 organization = create(:organization)
                 resource_category = create(:resource_category)
@@ -26,6 +28,7 @@ RSpec.describe TicketsController, type: :controller do
                 resource_category_id: resource_category.id)
                 })
                 expect(response).to redirect_to ticket_submitted_path } #it works
+
         it { expect(get(:new)).to be_successful }
         
         
@@ -42,25 +45,63 @@ RSpec.describe TicketsController, type: :controller do
 
         let(:user) { FactoryBot.create(:user) }
         before(:each) { sign_in user }
-        it { expect(post(:create, params: { ticket: FactoryBot.attributes_for(:ticket) })).to be_successful }
-        it {    region = create(:region)
-        organization = create(:organization)
-        resource_category = create(:resource_category)
 
-        post(:create, params: { ticket: FactoryBot.attributes_for(:ticket,
-        region_id: region.id,
-        organization_id: organization.id,
-        resource_category_id: resource_category.id)
-        })
-        expect(response).to redirect_to ticket_submitted_path } #it works
+        it { expect(post(:create, params: { ticket: FactoryBot.attributes_for(:ticket) })).to be_successful }
+
+        it {    region = create(:region)
+                organization = create(:organization)
+                resource_category = create(:resource_category)
+
+                post(:create, params: { ticket: FactoryBot.attributes_for(
+                    :ticket,
+                    region_id: region.id,
+                    organization_id: organization.id,
+                    resource_category_id: resource_category.id
+                )})
+                expect(response).to redirect_to ticket_submitted_path } #it works
 
         it { expect(get(:new)).to be_successful }
         it {show_test1 = create(:ticket)
                 get( :show, params: { id: show_test1.id})
-                expect(response).to be_successful }
+                expect(response).to redirect_to dashboard_path }
+        
 
 
     end
+
+
+
+    describe 'as a logged in user org approved' do
+
+        let(:user) { FactoryBot.create(:user, :organization_approved) }
+        before(:each) { sign_in user }
+
+        it { expect(post(:create, params: { ticket: FactoryBot.attributes_for(:ticket) })).to be_successful }
+
+
+        it {    region = create(:region)
+                organization = create(:organization)
+                resource_category = create(:resource_category)
+
+                post(:create, params: { ticket: FactoryBot.attributes_for(
+                    :ticket,
+                    region_id: region.id,
+                    organization_id: organization.id,
+                    resource_category_id: resource_category.id
+                )})
+            expect(response).to redirect_to ticket_submitted_path } #it works
+
+        it { expect(get(:new)).to be_successful }
+
+
+        it {show_test1 = create(:ticket)
+                get( :show, params: { id: show_test1.id})
+                expect(response).to be_successful }
+        
+
+
+    end
+
 
 
     describe 'as an admin' do
@@ -69,14 +110,15 @@ RSpec.describe TicketsController, type: :controller do
         before(:each) { sign_in user }
         it { expect(post(:create, params: { ticket: FactoryBot.attributes_for(:ticket) })).to be_successful }
         it {    region = create(:region)
-        organization = create(:organization)
-        resource_category = create(:resource_category)
+                organization = create(:organization)
+                resource_category = create(:resource_category)
 
-        post(:create, params: { ticket: FactoryBot.attributes_for(:ticket,
-        region_id: region.id,
-        organization_id: organization.id,
-        resource_category_id: resource_category.id)
-        })
+                post(:create, params: { ticket: FactoryBot.attributes_for(
+                    :ticket,
+                    region_id: region.id,
+                    organization_id: organization.id,
+                    resource_category_id: resource_category.id
+                )})
         expect(response).to redirect_to ticket_submitted_path } #it works
 
         it { expect(get(:new)).to be_successful }
