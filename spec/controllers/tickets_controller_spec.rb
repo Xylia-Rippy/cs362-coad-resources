@@ -2,11 +2,11 @@ require 'rails_helper'
 
 #   tickets POST            /tickets(.:format)                 tickets#create  fully_done
 #   new_ticket GET          /tickets/new(.:format)             tickets#new     fully_done
-#   ticket GET              /tickets/:id(.:format)             tickets#show    
-#   capture_ticket POST     /tickets/:id/capture(.:format)     tickets#capture
-#   release_ticket POST     /tickets/:id/release(.:format)     tickets#release
-#   close_ticket PATCH      /tickets/:id/close(.:format)       tickets#close
-#   DELETE                  /tickets/:id(.:format)             tickets#destroy
+#   ticket GET              /tickets/:id(.:format)             tickets#show    Fully_done
+#   capture_ticket POST     /tickets/:id/capture(.:format)     tickets#capture fully_done
+#   release_ticket POST     /tickets/:id/release(.:format)     tickets#release fully_done
+#   close_ticket PATCH      /tickets/:id/close(.:format)       tickets#close   
+#   DELETE                  /tickets/:id(.:format)             tickets#destroy 
 
 
 RSpec.describe TicketsController, type: :controller do
@@ -38,6 +38,23 @@ RSpec.describe TicketsController, type: :controller do
                 expect(response).to redirect_to dashboard_path 
             }
 
+        it {    show_test1 = create(:ticket)
+                post( :capture, params: { id: show_test1.id})
+                expect(response).to redirect_to dashboard_path }
+
+        it {    show_test1 = create(:ticket)
+                post( :release, params: { id: show_test1.id})
+                expect(response).to redirect_to dashboard_path }
+
+
+        it {    show_test1 = create(:ticket)
+                patch( :close, params: { id: show_test1.id})
+                expect(response).to redirect_to dashboard_path }
+
+        it {    show_test1 = create(:ticket)
+                delete( :close, params: { id: show_test1.id})
+                expect(response).to redirect_to dashboard_path }
+
     end
 
 
@@ -65,7 +82,21 @@ RSpec.describe TicketsController, type: :controller do
         it {    show_test1 = create(:ticket)
                 get( :show, params: { id: show_test1.id})
                 expect(response).to redirect_to dashboard_path }
+
+        it {    show_test1 = create(:ticket)
+                post( :capture, params: { id: show_test1.id})
+                expect(response).to redirect_to dashboard_path }
         
+        it {    show_test1 = create(:ticket)
+                post( :release, params: { id: show_test1.id})
+                expect(response).to redirect_to dashboard_path }
+
+
+        it {    show_test1 = create(:ticket)
+                patch( :close, params: { id: show_test1.id})
+                expect(response).to redirect_to dashboard_path }
+
+
 
 
     end
@@ -98,7 +129,25 @@ RSpec.describe TicketsController, type: :controller do
         it {    show_test3 = create(:ticket)
                 get( :show, params: { id: show_test3.id})
                 expect(response).to be_successful }
-        
+
+        it {    show_test1 = create(:ticket)
+                post( :capture, params: { id: show_test1.id})
+                expect(response).to be_successful }
+
+
+        it {    show_test1 = create(:ticket)
+                post( :release, params: { id: show_test1.id})
+                expect(response).to be_successful }
+
+
+
+        it {    show_test1 = create(:ticket)
+                patch( :close, params: { id: show_test1.id})
+                expect(response).to be_successful }
+
+
+
+
 
 
     end
@@ -129,6 +178,30 @@ RSpec.describe TicketsController, type: :controller do
         it {    show_test2 = create(:ticket)
                 get( :show, params: { id: show_test2.id})
                 expect(response).to be_successful }
+
+
+        it {    show_test1 = create(:ticket)
+                post( :capture, params: { id: show_test1.id})
+                expect(response).to redirect_to dashboard_path }
+
+
+        it {    show_test1 = create(:ticket)
+                post( :release, params: { id: show_test1.id})
+                expect(response).to redirect_to dashboard_path }
+
+
+
+        it {    show_test1 = create(:ticket)
+                patch( :close, params: { id: show_test1.id})
+                expect(response).to redirect_to dashboard_path << '#tickets:open' }
+
+
+#        it {    show_test1 = create(:ticket)
+#                delete( :destroy, params: { id: show_test1.id})
+#                expect(response).to change(:ticket, :count).by(-1) }
+
+        
+
 
     end
 
