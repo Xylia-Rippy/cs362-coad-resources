@@ -196,9 +196,9 @@ RSpec.describe TicketsController, type: :controller do
                 expect(response).to redirect_to dashboard_path << '#tickets:open' }
 
 
-#        it {    show_test1 = create(:ticket)
-#                delete( :destroy, params: { id: show_test1.id})
-#                expect(response).to change(:ticket, :count).by(-1) }
+        it {    show_test1 = create(:ticket)
+                delete( :destroy, params: { id: show_test1.id})
+                expect(response).to redirect_to (dashboard_path << '#tickets') }
 
         
 
