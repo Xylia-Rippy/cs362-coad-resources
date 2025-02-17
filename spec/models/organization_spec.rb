@@ -85,7 +85,7 @@ RSpec.describe Organization, type: :model do
 
   describe "methods" do
     it "approves the organization" do
-      organization.update(status: "approved")
+      organization.update(status: :approved)
       expect(organization.status).to eq("approved")
     end
 

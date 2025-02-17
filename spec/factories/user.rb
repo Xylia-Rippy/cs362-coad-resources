@@ -1,9 +1,9 @@
 FactoryBot.define do
   factory :user do
     email
-    password { "fake_password" }
+    password { "password" }
 
-    before(:create) { |user| user.skip_confirmation! }
+    before(:create, &:skip_confirmation!)
 
     trait :organization_approved do
       role { :organization }
@@ -20,3 +20,4 @@ FactoryBot.define do
     end
   end
 end
+
