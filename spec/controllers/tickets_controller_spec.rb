@@ -135,15 +135,34 @@ RSpec.describe TicketsController, type: :controller do
                 expect(response).to be_successful }
 
 
+        it {    show_test1 = create(:ticket_without_organization)
+                post( :capture, params: { id: show_test1.id})
+                expect(response).to redirect_to dashboard_path << '#tickets:open' }
+
+
+
         it {    show_test1 = create(:ticket)
                 post( :release, params: { id: show_test1.id})
                 expect(response).to be_successful }
+
+
+        it {    
+                show_test1 = create(:ticket, organization_id: user.organization_id)
+                #pp show_test1.organization_id
+                #user.organization_id
+                post( :release, params: { id: show_test1.id})
+                expect(response).to redirect_to dashboard_path << '#tickets:organization' }
 
 
 
         it {    show_test1 = create(:ticket)
                 patch( :close, params: { id: show_test1.id})
                 expect(response).to be_successful }
+
+
+        it {    show_test1 = create(:ticket, organization_id: user.organization_id)
+                patch( :close, params: { id: show_test1.id})
+                expect(response).to redirect_to dashboard_path << '#tickets:organization' }
 
 
 
@@ -185,9 +204,15 @@ RSpec.describe TicketsController, type: :controller do
                 expect(response).to redirect_to dashboard_path }
 
 
+
+
+
+
         it {    show_test1 = create(:ticket)
                 post( :release, params: { id: show_test1.id})
-                expect(response).to redirect_to dashboard_path }
+                expect(response).to redirect_to dashboard_path << '#tickets:captured' }
+
+
 
 
 

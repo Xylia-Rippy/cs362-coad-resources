@@ -3,9 +3,12 @@ module TicketService
     def release_ticket(id, user)
       catch :error do
         ticket = Ticket.find(id)
+        #pp "start"
         throw :error, 'User does not have permission to release ticket' unless user_can_release?(ticket, user)
+        # pp "next"
         ticket.organization_id = nil
         throw :error, 'Failed to release ticket' unless ticket.save
+         #pp "end"
         :ok
       end
     end
@@ -34,6 +37,8 @@ module TicketService
     private
 
     def user_can_release?(ticket, user)
+      #pp ticket.organization_id.present?
+      #pp user.organization_id == ticket.organization_id || user.admin?
       ticket.organization_id.present? && user.organization_id == ticket.organization_id || user.admin?
     end
 
