@@ -15,15 +15,15 @@ FactoryBot.define do
     transportation       { 1 }  # Matches schema integer representation
 
     trait :approved do
-      status { 2 }
+      status { 0 }
     end
 
     trait :rejected do
-      status { 3 }
+      status { 2 }
     end
 
     trait :locked do
-      status { 4 }
+      status { 3 }
     end
 
     after(:build) { |organization| organization.status ||= 1 }
