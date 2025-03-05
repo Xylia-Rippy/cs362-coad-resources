@@ -3,7 +3,7 @@ FactoryBot.define do
     sequence(:name)  { |n| "Test Organization #{n}" }  # Ensure unique name
     sequence(:email) { |n| "test#{n}@example.com" }    # Ensure unique email
 
-    status                { 1 }  # Default status (submitted)
+    status                { :submitted }  # Default status (submitted)
     phone                 { "123-456-7890" }
     description           { "a" * 1000 }  # Matches validation constraints
     rejection_reason      { nil }
@@ -15,15 +15,19 @@ FactoryBot.define do
     transportation       { 1 }  # Matches schema integer representation
 
     trait :approved do
-      status { 0 }
+      status { :approved }
     end
 
     trait :rejected do
-      status { 2 }
+      status { :rejected }
     end
 
     trait :locked do
-      status { 3 }
+      status { :locked }
+    end
+
+    trait :submitted do
+      status { :submitted }
     end
 
     after(:build) { |organization| organization.status ||= 1 }
