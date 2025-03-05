@@ -45,8 +45,8 @@ ActiveRecord::Schema.define(version: 2019_06_02_165911) do
 
   create_table "resource_categories", force: :cascade do |t|
     t.string "name"
-    t.datetime "created_at", null: false #
-    t.datetime "updated_at", null: false #
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.boolean "active", default: true
   end
 
@@ -54,16 +54,16 @@ ActiveRecord::Schema.define(version: 2019_06_02_165911) do
     t.string "name"
     t.string "description"
     t.string "phone"
-    t.integer "organization_id" #
-    t.datetime "created_at", null: false #
-    t.datetime "updated_at", null: false #
+    t.integer "organization_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.boolean "closed", default: false
     t.datetime "closed_at"
-    t.integer "resource_category_id" #
-    t.integer "region_id" #
-    t.index ["organization_id"], name: "index_tickets_on_organization_id" #
-    t.index ["region_id"], name: "index_tickets_on_region_id" #
-    t.index ["resource_category_id"], name: "index_tickets_on_resource_category_id" 
+    t.integer "resource_category_id"
+    t.integer "region_id"
+    t.index ["organization_id"], name: "index_tickets_on_organization_id"
+    t.index ["region_id"], name: "index_tickets_on_region_id"
+    t.index ["resource_category_id"], name: "index_tickets_on_resource_category_id"
   end
 
   create_table "users", force: :cascade do |t|

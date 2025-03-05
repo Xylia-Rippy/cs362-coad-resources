@@ -8,13 +8,13 @@ RSpec.describe 'User email addresses', type: :feature do
 
   it 'displays the email of an authenticated user' do
     log_in_as @admin
-    visit users_path # Ensuring correct path
+    visit users_index_path # Fixed path
 
     expect(page.body).to have_text(@admin.email)
   end
 
   it 'prevents unauthenticated access' do
-    visit users_path
+    visit users_index_path
 
     expect(current_path).to eq new_user_session_path
     expect(page.body).to have_text('You need to sign in or sign up before continuing.')
@@ -23,11 +23,11 @@ RSpec.describe 'User email addresses', type: :feature do
   it 'prevents unconfirmed users from logging in' do
     visit new_user_session_path
 
-    fill_in 'Email', with: @unconfirmed_user.email
-    fill_in 'Password', with: 'password' # Default password
+    fill_in 'Email address', with: @unconfirmed_user.email
+    fill_in 'Password', with: 'password'
 
-    click_on 'Log in'
+    click_button 'Sign in'
 
-    expect(page.body).to have_text(/confirm your email/i) # Ensures flexible matching
+    expect(page.body).to have_text(/confirm your email/i)
   end
 end
