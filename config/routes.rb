@@ -13,6 +13,7 @@ Rails.application.routes.draw do
     delete '/logout' => 'users/sessions#destroy'
     get '/signup' => 'users/registrations#new'
     get '/edit_profile' => 'users/registrations#edit'
+    get '/users' => 'users#index'
   end
   devise_for :users, controllers: { registrations: 'users/registrations' }
 
