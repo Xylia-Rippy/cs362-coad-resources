@@ -1,6 +1,9 @@
 Rails.application.routes.draw do
   root 'static_pages#index'
 
+  resources :users, only: [:index]
+
+
   resources :tickets, only: [:new, :create, :show]
   get '/ticket_submitted' => 'static_pages#ticket_submitted'
   get '/organization_expectations' => 'static_pages#organization_expectations'
