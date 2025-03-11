@@ -22,12 +22,18 @@ class OrganizationsController < ApplicationController
 
     if @new_organization.save && current_user.save
       redirect_to organization_application_submitted_path
-      email = UserMailer.with(to: User.where(role: :admin).pluck(:email), new_organization: @new_organization).new_organization_application
-      if email then email.deliver_now end
+      
+      admin_emails = User.where(role: :admin).pluck(:email)
+      if admin_emails.present?
+        UserMailer.with(to: admin_emails, new_organization: @new_organization)
+                  .new_organization_application
+                  .deliver_now
+      end
     else
       @organization = @new_organization
       render :new
     end
+    
   end
 
   def edit

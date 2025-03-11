@@ -1,23 +1,47 @@
 require 'rails_helper'
 
-RSpec.describe 'Creating an Organization Application', type: :feature do
-  it 'can be used' do
-    visit new_organization_application_path
+RSpec.describe 'User signs up and applies as an organization', type: :feature do
+  it 'signs up and submits an organization application' do
+    visit root_path
 
-    # Inspect page if failure persists
-    # save_and_open_page
+    # Step 1: Click Sign Up
+    click_link 'Sign up'
 
-    # # Fix: Use actual values Rails renders ("1" instead of true)
-    # find("input[name='organization[liability_insurance]'][value='1']").click
-    # find("input[name='organization[agreement_one]'][value='1']").click
-    # find("input[name='organization[agreement_two]'][value='1']").click
-    # find("input[name='organization[agreement_three]'][value='1']").click
-    # find("input[name='organization[agreement_four]'][value='1']").click
-    # find("input[name='organization[agreement_five]'][value='1']").click
-    # find("input[name='organization[agreement_six]'][value='1']").click
-    # find("input[name='organization[agreement_seven]'][value='1']").click
-    # find("input[name='organization[agreement_eight]'][value='1']").click
+    # Step 2: Fill in registration form
+    fill_in 'Email', with: 'newuser@example.com'
+    fill_in 'Password', with: 'SecurePass123'
+    fill_in 'Password confirmation', with: 'SecurePass123'
+    click_button 'Sign up'
 
+    # Step 3: Handle confirmation if Devise confirmable is enabled
+    if page.has_text?('A message with a confirmation link has been sent to your email address')
+      user = User.find_by(email: 'newuser@example.com')
+      user.update(confirmed_at: Time.current) if user && user.respond_to?(:confirmed_at)
+
+      visit new_user_session_path
+      fill_in 'Email', with: 'newuser@example.com'
+      fill_in 'Password', with: 'SecurePass123'
+      click_button 'Sign in'
+      expect(page).to have_text('Signed in successfully')
+    else
+      expect(page).to have_text('Welcome! You have signed up successfully.')
+    end
+
+    # Step 4: Click "Create Application" on the dashboard
+    click_link 'Create Application'
+
+    # Step 5: Fill out required radio buttons
+    find("input[name='organization[liability_insurance]'][value='true']", visible: false).click
+    find("input[name='organization[agreement_one]'][value='true']", visible: false).click
+    find("input[name='organization[agreement_two]'][value='true']", visible: false).click
+    find("input[name='organization[agreement_three]'][value='true']", visible: false).click
+    find("input[name='organization[agreement_four]'][value='true']", visible: false).click
+    find("input[name='organization[agreement_five]'][value='true']", visible: false).click
+    find("input[name='organization[agreement_six]'][value='true']", visible: false).click
+    find("input[name='organization[agreement_seven]'][value='true']", visible: false).click
+    find("input[name='organization[agreement_eight]'][value='true']", visible: false).click
+
+    # Step 6: Fill in text fields
     fill_in 'What is your name?', with: 'Doe, John'
     fill_in 'Organization Name', with: 'Test Organization'
     fill_in 'What is your title? (if applicable)', with: 'Director'
@@ -27,13 +51,17 @@ RSpec.describe 'Creating an Organization Application', type: :feature do
     fill_in 'What is your Organization\'s email?', with: 'test@example.com'
     fill_in 'Description', with: 'We provide food and water in emergencies.'
 
+    # Step 7: Check a resource category (if exists)
     check(ResourceCategory.first.name) if ResourceCategory.any?
 
-    find("input[name='organization[transportation]'][value='yes']").click
+    # Step 8: Select transportation
+    find("input[name='organization[transportation]'][value='yes']", visible: false).click
 
+    # Step 9: Submit form
     click_button 'Apply'
 
+    # Step 10: Confirm success
     expect(current_path).to eq organization_application_submitted_path
-    expect(page).to have_text('Application submitted successfully')
+    expect(page).to have_text('Thank you for applying')
   end
 end

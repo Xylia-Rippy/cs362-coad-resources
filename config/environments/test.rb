@@ -1,3 +1,8 @@
+Recaptcha.configure do |config|
+  config.site_key  = 'fake_site_key'
+  config.secret_key = 'fake_secret_key'
+end
+
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 

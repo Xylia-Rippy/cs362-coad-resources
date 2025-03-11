@@ -133,6 +133,18 @@ if Rails.env == 'development'
     test_user.save!
   end
 
+  unless User.exists?(email: ENV['TEST_USER_EMAIL_NO_ORG'])
+    puts "Seeding standalone user (no organization)"
+    standalone_user = User.new(
+      email: ENV['TEST_USER_EMAIL_NO_ORG'],
+      password: ENV['TEST_USER_PASSWORD'],
+      role: 1 # or whatever role is appropriate
+    )
+    standalone_user.skip_confirmation! if standalone_user.respond_to?(:skip_confirmation!)
+    standalone_user.save!
+  end
+  
+
   unless ResourceCategory.exists?(name: 'test')
     ResourceCategory.create(name: 'test')
   end
