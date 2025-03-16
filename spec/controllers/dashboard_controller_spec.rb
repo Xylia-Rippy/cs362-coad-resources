@@ -234,4 +234,32 @@ RSpec.describe DashboardController, type: :controller do
       expect(tickets).to include(captured_ticket)
     end
   end
+
+  # Non-signed-in user already tested in original for GET #index
+ # Let's add admin and normal signed-in users for each action
+
+ describe DashboardController, type: :controller do
+  let(:user) { create(:user) }
+  let(:admin) { create(:user, :admin) }
+
+  describe 'GET #index' do
+    context 'as admin' do
+      before { sign_in admin }
+
+      it 'renders index' do
+        get :index
+        expect(response).to have_http_status(:success)
+      end
+    end
+
+    context 'as normal signed-in user' do
+      before { sign_in user }
+
+      it 'renders index' do
+        get :index
+        expect(response).to have_http_status(:success)
+      end
+    end
+  end
+end
 end
