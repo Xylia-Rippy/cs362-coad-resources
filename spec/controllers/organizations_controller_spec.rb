@@ -153,33 +153,91 @@ RSpec.describe OrganizationsController, type: :controller do
   end
 
   describe 'POST #approve' do
-    it 'approves org as admin' do
-      sign_in admin
-      post :approve, params: { id: organization.id }
-      organization.reload
-      expect(organization.approved?).to be true
-      expect(response).to redirect_to organizations_path
-    end
 
     it 'redirects non-signed-in user' do
       post :approve, params: { id: organization.id }
       expect(response).to redirect_to(new_user_session_path)
+    end
+
+    it 'redirects non-admin user' do
+      sign_in user
+      post :approve, params: { id: organization.id }
+      expect(response).to redirect_to(dashboard_path)
+    end
+
+    describe 'as admin' do
+      before { sign_in admin }
+
+      context 'successful approval' do
+        it 'approves the organization and redirects' do
+          organization = create(:organization)
+          allow(organization).to receive(:approve).and_return(true)
+          post :approve, params: { id: organization.id }
+
+          organization.reload
+          expect(organization.approved?).to be true
+
+          expect(response).to redirect_to organizations_path
+          expect(flash[:notice]).to eq("Organization #{organization.name} has been approved.")
+        end
+      end
+
+      context 'unsuccessful approval' do
+        before do
+          allow_any_instance_of(Organization).to receive(:save).and_return(false)
+          allow(controller).to receive(:render).and_return(true)
+        end
+
+        it 'fails and renders organiztion page' do
+          post :approve, params: { id: organization.id }
+
+
+          expect(controller).to have_received(:render).with(organization_path(id: organization.id))
+        
+        end
+      end
     end
   end
 
   describe 'POST #reject' do
-    it 'rejects org as admin' do
-      sign_in admin
-      post :reject, params: { id: organization.id, organization: { rejection_reason: 'Incomplete documents' } }
-      organization.reload
-      expect(organization.rejected?).to be true
-      expect(organization.rejection_reason).to eq('Incomplete documents')
-      expect(response).to redirect_to organizations_path
-    end
-
     it 'redirects non-signed-in user' do
       post :reject, params: { id: organization.id, organization: { rejection_reason: 'Reason' } }
       expect(response).to redirect_to(new_user_session_path)
     end
+
+    it 'redirects non-admin user' do
+      sign_in user
+      post :reject, params: { id: organization.id, organization: { rejection_reason: 'Reason' } }
+      expect(response).to redirect_to(dashboard_path)
+    end
+
+    describe 'successful rejection' do
+
+      before { sign_in admin }
+      context 'successful rejection' do
+        it 'rejects the organization and redirects' do
+          organization = create(:organization)
+          post :reject, params: { id: organization.id, organization: { rejection_reason: 'Incomplete documents' } }
+          organization.reload
+          expect(organization.rejected?).to be true
+          expect(organization.rejection_reason).to eq('Incomplete documents')
+          expect(response).to redirect_to organizations_path
+        end
+      end
+
+      context 'unsuccessful rejection' do
+        before do
+          allow_any_instance_of(Organization).to receive(:save).and_return(false)
+          allow(controller).to receive(:render).and_return(true)
+        end
+
+        it 'renders organization page' do
+          post :reject, params: { id: organization.id, organization: { rejection_reason: 'Incomplete documents' } }
+          expect(controller).to have_received(:render).with(organization_path(id: organization.id))
+        end
+      end
+    end
   end
 end
+
+

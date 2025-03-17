@@ -11,6 +11,11 @@ RSpec.describe RegionsController, type: :controller do
       expect(response).to redirect_to(new_user_session_path)
     end
 
+    it 'redirects show to login' do
+      get :show, params: { id: region.id }
+      expect(response).to redirect_to(new_user_session_path)
+    end
+
     it 'redirects create to login' do
       post :create, params: { region: FactoryBot.attributes_for(:region) }
       expect(response).to redirect_to(new_user_session_path)
@@ -18,6 +23,21 @@ RSpec.describe RegionsController, type: :controller do
 
     it 'redirects new to login' do
       get :new
+      expect(response).to redirect_to(new_user_session_path)
+    end
+
+    it 'redirects edit to login' do
+      get :edit, params: { id: region.id }
+      expect(response).to redirect_to(new_user_session_path)
+    end
+
+    it 'redirects update to login' do
+      patch :update, params: { id: region.id, region: { name: 'Updated Name' } }
+      expect(response).to redirect_to(new_user_session_path)
+    end
+
+    it 'redirects destroy to login' do
+      delete(:destroy, params: {id: region.id})
       expect(response).to redirect_to(new_user_session_path)
     end
   end
@@ -28,6 +48,36 @@ RSpec.describe RegionsController, type: :controller do
 
     it 'redirects index to dashboard' do
       get :index
+      expect(response).to redirect_to(dashboard_path)
+    end
+
+    it 'redirects show to dashboard' do
+      get :show, params: { id: region.id }
+      expect(response).to redirect_to(dashboard_path)
+    end
+
+    it 'redirects create to dashboard' do
+      post :create, params: { region: FactoryBot.attributes_for(:region) }
+      expect(response).to redirect_to(dashboard_path)
+    end
+
+    it 'redirects new to dashboard' do
+      get :new
+      expect(response).to redirect_to(dashboard_path)
+    end
+
+    it 'redirects edit to dashboard' do
+      get :edit, params: { id: region.id }
+      expect(response).to redirect_to(dashboard_path)
+    end
+
+    it 'redirects update to dashboard' do
+      patch :update, params: { id: region.id, region: { name: 'Updated Name' } }
+      expect(response).to redirect_to(dashboard_path)
+    end
+
+    it 'redirects destroy to dashboard' do
+      delete(:destroy, params: {id: region.id})
       expect(response).to redirect_to(dashboard_path)
     end
   end

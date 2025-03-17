@@ -7,7 +7,7 @@ RSpec.describe 'Deleting a Region', type: :feature do
         @region = create(:region)
     end
 
-    it 'can be used' do
+    it 'can delete a region' do
 
         log_in_as @user
         visit regions_path

@@ -6,7 +6,7 @@ RSpec.describe 'Creating a Region', type: :feature do
         @user = create(:user, :admin)
     end
 
-    it 'can be used' do
+    it 'can create a region' do
 
         log_in_as @user
         visit regions_path
